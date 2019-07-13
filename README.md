@@ -22,8 +22,8 @@ return f(10)
 
 - [x] Unlike projects using `inspect.getsource`, syntax extensions are achieved without evil IO operations or requiring source files.
 
-- [ ] Literal patterns:
+- [x] Literal patterns:
     - [x] string, number and other constant patterns
-    - [ ] tuple, list patterns
+    - [x] tuple, list patterns
 
 - [x] Provided with the capabilities to customize semantics of python syntaxes.

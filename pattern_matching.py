@@ -112,6 +112,7 @@ class CaseCompilation(ast.NodeVisitor):
         check = ast.BoolOp(op=ast.And(), values=[check_type, check_len])
         self.block.append(if_not_else(check, [raise_not_match(tp)], []))
         lhs = ast.List(lhs_elts, ctx=ast.Store())
+
         self.block.append(ast.Assign([lhs], self.val_to_match))
 
         for id_, case in zip(ids, cases):
@@ -228,6 +229,7 @@ class PatternMatching(ast.NodeTransformer):
         for if_ in ifs:
             assert not if_.orelse
             case = if_.test
+
             assert isinstance(case, ast.Subscript)
             assert isinstance(case.value, ast.Name) and case.value.id == "case"
             assert isinstance(case.slice, ast.Index)
