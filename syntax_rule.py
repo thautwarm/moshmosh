@@ -77,7 +77,7 @@ def _syntax_rule(f, transformer, debug):
                 setattr(param, "_" + obj_name, Var(var_name))
 
     for name, freevar in zip(f.__code__.co_freevars, f.__closure__ or ()):
-        freevars[name] = freevar
+        freevars[name] = freevar.cell_contents
 
     # the function header
     header = "def {name}{sig}:".format(name=f.__name__, sig=str(signature))
