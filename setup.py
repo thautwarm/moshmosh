@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 from datetime import datetime
 
-with Path('README.md').open() as readme:
+with open('README.md') as readme:
     readme = readme.read()
 
 version = "0.1.0"
