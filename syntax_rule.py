@@ -1,4 +1,4 @@
-from uncompyle6 import deparse_code, PYTHON_VERSION
+from uncompyle6 import code_deparse
 from io import StringIO
 from inspect import Signature, _empty as empty
 from types import FunctionType
@@ -35,7 +35,7 @@ def _syntax_rule(f, transformer, debug):
     assert isinstance(f, FunctionType)
     sio = StringIO()
 
-    deparse_code(PYTHON_VERSION, f.__code__, out=sio)
+    code_deparse(f.__code__, out=sio)
     func_body_codestr = sio.getvalue()
 
     # `func_body_codestr` has no info of function head,

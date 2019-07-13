@@ -27,8 +27,8 @@ class CaseCompilation(ast.NodeVisitor):
     https://mail.python.org/pipermail/python-ideas/2015-April/032920.html
 
     with match(expr):
-        if C(a, b): do_some1
-        if _: do_some2
+        if case[C(a, b)]: do_some1
+        if case[_]: do_some2
     =>
     .r0 = expr
     try:
@@ -127,7 +127,10 @@ class PatternMatching(ast.NodeTransformer):
         # check if is `match(val)`
         assert not item.keywords and len(item.args) == 1
         # check if all stmts in the with block are in the form
-        # `if <pattern>: stmts
+        # `if case[<pattern>]: stmts`
+        #
+        # Q: Why not `if <pattern>`?
+        # A: `if 0` will be removed after decompilation.
 
         assert all(isinstance(stmt, ast.If) for stmt in node.body)
 
@@ -151,10 +154,15 @@ class PatternMatching(ast.NodeTransformer):
         blocks = []
 
         for if_ in ifs:
-            assert not if_.orelse # check if in the form of `if case: ...`
+            assert not if_.orelse
+            case = if_.test
+            assert isinstance(case, ast.Subscript)
+            assert isinstance(case.value, ast.Name) and case.value.id == "case"
+            assert isinstance(case.slice, ast.Index)
+            case = case.slice.value
             captures = {}
             block = []
-            case = if_.test
+
             case_compilation = CaseCompilation(name_of_val_to_match, captures, block, self)
             case_compilation.visit(case)
             for actual_name, local_bind_name in captures.items():
