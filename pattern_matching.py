@@ -10,6 +10,9 @@ def compare(v1, op, v2):
 def if_else(exp, br1, br2):
     return ast.If(exp, body=br1, orelse=br2)
 
+def if_not_else(exp, br1, br2):
+    cond = ast.UnaryOp(op=ast.Not(), operand=exp)
+    return if_else(cond, br1, br2)
 
 def assign_name(name, val):
     return ast.Assign([ast.Name(name, ctx=ast.Store())], val)
@@ -79,6 +82,75 @@ class CaseCompilation(ast.NodeVisitor):
         cond = compare(self.val_to_match, ast.NotEq(), ast.Constant(i))
         raise_ = raise_not_match(i)
         self.block.append(if_else(cond, [raise_], []))
+
+    def visit_List(self, tp: ast.List):
+        ids = [self.pat.next_id for _ in tp.elts]
+        lhs_elts = []
+        cases = []
+        has_star = False
+        for id_, elt in zip(ids, tp.elts):
+            if isinstance(elt, ast.Starred):
+                star = ast.Starred(value=ast.Name(id_, ctx=ast.Store()),
+                                   ctx=ast.Store())
+                lhs_elts.append(star)
+                cases.append(elt.value)
+                has_star = True
+            else:
+                lhs_elts.append(ast.Name(id_, ctx=ast.Store()))
+                cases.append(elt)
+        len_of_val = ast.Call(
+            func = ast.Name("len", ctx=ast.Load()),
+            args = [self.val_to_match],
+            keywords = []
+        )
+
+        check_len = compare(len_of_val, ast.GtE() if has_star else ast.Eq(), ast.Constant(len(cases)))
+        check_type = ast.Call(
+                        func = ast.Name("isinstance", ctx=ast.Load()),
+                        args=[self.val_to_match, ast.Name("list", ctx=ast.Load())],
+                        keywords=[])
+        check = ast.BoolOp(op=ast.And(), values=[check_type, check_len])
+        self.block.append(if_not_else(check, [raise_not_match(tp)], []))
+        lhs = ast.List(lhs_elts, ctx=ast.Store())
+        self.block.append(ast.Assign([lhs], self.val_to_match))
+
+        for id_, case in zip(ids, cases):
+            CaseCompilation(id_, self.captures, self.block, self.pat).visit(case)
+
+
+    def visit_Tuple(self, tp: ast.Tuple):
+        ids = [self.pat.next_id for _ in tp.elts]
+        lhs_elts = []
+        cases = []
+        has_star = False
+        for id_, elt in zip(ids, tp.elts):
+            if isinstance(elt, ast.Starred):
+                star = ast.Starred(value=ast.Name(id_, ctx=ast.Store()),
+                                   ctx=ast.Store())
+                lhs_elts.append(star)
+                cases.append(elt.value)
+                has_star = True
+            else:
+                lhs_elts.append(ast.Name(id_, ctx=ast.Store()))
+                cases.append(elt)
+        len_of_val = ast.Call(
+            func = ast.Name("len", ctx=ast.Load()),
+            args = [self.val_to_match],
+            keywords = []
+        )
+
+        check_len = compare(len_of_val, ast.GtE() if has_star else ast.Eq(), ast.Constant(len(cases)))
+        check_type = ast.Call(
+                        func = ast.Name("isinstance", ctx=ast.Load()),
+                        args=[self.val_to_match, ast.Name("Tuple", ctx=ast.Load())],
+                        keywords=[])
+        check = ast.BoolOp(op=ast.And(), values=[check_type, check_len])
+        self.block.append(if_not_else(check, [raise_not_match(tp)], []))
+        lhs = ast.Tuple(lhs_elts, ctx=ast.Store())
+        self.block.append(ast.Assign([lhs], self.val_to_match))
+
+        for id_, case in zip(ids, cases):
+            CaseCompilation(id_, self.captures, self.block, self.pat).visit(case)
 
     def visit_Call(self, call: ast.Call):
         """

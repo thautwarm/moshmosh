@@ -12,9 +12,9 @@ class C:
 @syntax_rule(pattern_matching)
 def f1(x):
     with match(x):
-        if case[C(C(a, b), C(c, d))]: print(a, b, c, d)
+        if case[C(C(a, b), C(c, d))]: return (a, b, c, d)
 
-f1(1)
+assert f1(1) == (1, ) * 4
 
 @syntax_rule(pattern_matching)
 def f2(x, r=1):
@@ -22,4 +22,15 @@ def f2(x, r=1):
         if case[0]: return r
         if case[x]: return f2(x-1, r * x)
 
-print(f2(5))
+assert f2(5) == 120
+
+
+@syntax_rule(pattern_matching)
+def f3(x):
+    with match(x):
+        if case[(1, x, y)]: return x + y
+        if case[_]: return 0
+
+assert f3((1, 2, 3)) == 5
+assert f3((1, 2, 3, 4)) == 0
+assert f3(1) == 0
