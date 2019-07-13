@@ -16,6 +16,9 @@ def f(x, r=1):
 return f(10)
 ```
 
+Installation: `pip install moshmosh-syntax`.
+
+
 # Features
 
 - [x] Tree pattern matching: `if C1(C2(1), ""): ...`
