@@ -7,7 +7,7 @@ with open('README.md') as readme:
 version = "0.1.0"
 
 setup(
-    name='moshmosh',
+    name='moshmosh-syntax',
     version=version if isinstance(version, str) else str(version),
     keywords="syntax extension, macro, pattern matching", # keywords of your project separated by comma ","
     description="A hygienic syntax extension system for Python", # a concise introduction of your project
