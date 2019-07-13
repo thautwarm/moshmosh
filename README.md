@@ -21,7 +21,7 @@ Installation: `pip install moshmosh-syntax`.
 
 # Features
 
-- [x] Tree pattern matching: `if C1(C2(1), ""): ...`
+- [x] Tree pattern matching: `if case[C1(C2(1), "")]: ...`
 
 - [x] Unlike projects using `inspect.getsource`, syntax extensions are achieved without evil IO operations or requiring source files.
 
