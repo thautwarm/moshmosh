@@ -1,5 +1,7 @@
 # Moshmosh
 
+**Attention!!**: this project is not ready for practical use, because it just provides poor error reporting.
+
 ![example.png](https://raw.githubusercontent.com/thautwarm/moshmosh/master/example.png)
 
 The TRUE implementation of pattern matching for Python.
