@@ -27,3 +27,18 @@ return f(10)
     - [x] tuple, list patterns
 
 - [x] Provided with the capabilities to customize semantics of python syntaxes.
+
+# Benchmarks
+
+Check benchmark.py.
+
+Although Pampy is much weaker than moshmosh, it's also much slower than moshmosh :) .
+Note tha moshmosh is currently a simple prototype implemented in few hours.
+
+Thus we can safely conclude, **A true one is always better than the fakers**.
+
+## Acknowledgements
+
+See [older implementations](http://www.grantjenks.com/docs/patternmatching/#alternative-packages) and search "pattern matching" in [Python-ideas](https://mail.python.org/archives/list/python-ideas@python.org/).
+
+Salute all the people used to work for Python pattern matching.
