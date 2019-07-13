@@ -1,16 +1,19 @@
+from __future__ import print_function
+
+from .ast_compat import ast
 from uncompyle6 import code_deparse
 from io import StringIO
-from inspect import Signature, _empty as empty
+from inspect import signature as get_signature, _empty as empty
 from types import FunctionType
 from textwrap import indent
 from time import time
-import ast
+
 
 try:
     from rbnf.py_tools.unparse import Unparser as print_ast
 except ImportError:
     try:
-        from astpretty import print_ast
+        from astpretty import pprint as print_ast
     except ImportError:
         print_ast = print
 
@@ -40,7 +43,7 @@ def _syntax_rule(f, transformer, debug):
 
     # `func_body_codestr` has no info of function head,
     # thus we should get the header manually.
-    signature = Signature.from_callable(f)
+    signature = get_signature(f)
 
     # for Python 3.6-, we should get the
     # correct order of function parameters.

@@ -1,6 +1,6 @@
-import ast
+from .ast_compat import ast
+from .syntax_rule import *
 
-from syntax_rule import *
 
 
 def compare(v1, op, v2):
@@ -27,6 +27,7 @@ def raise_not_match(_):
 
 class CaseCompilation(ast.NodeVisitor):
     """
+    Using the '__match__' protocol:
     https://mail.python.org/pipermail/python-ideas/2015-April/032920.html
 
     with match(expr):
@@ -45,11 +46,9 @@ class CaseCompilation(ast.NodeVisitor):
             r = .r0
         except:
             raise MatchError
-
-
             ...
     """
-    def __init__(self, name_of_val_to_match, captures, block, pat: 'PatternMatching'):
+    def __init__(self, name_of_val_to_match, captures, block, pat):
         """
         :param captures: a dict maps mangling names to local names
         """
@@ -63,19 +62,19 @@ class CaseCompilation(ast.NodeVisitor):
     def val_to_match(self):
         return ast.Name(self.name_of_val_to_match, ctx=ast.Load())
 
-    def visit_Num(self, v: ast.Num):
+    def visit_Num(self, v):
         self.visit_value(v.n)
 
-    def visit_Str(self, v: ast.Str):
+    def visit_Str(self, v):
         self.visit_value(v.s)
 
-    def visit_Name(self, v: ast.Name):
+    def visit_Name(self, v):
         self.captures[self.name_of_val_to_match] = v.id
 
-    def visit_NameConstant(self, v: ast.NameConstant):
+    def visit_NameConstant(self, v):
         self.visit_value(v.value)
 
-    def visit_Constant(self, c: ast.Constant):
+    def visit_Constant(self, c):
         self.visit_value(c.value)
 
     def visit_value(self, i):
@@ -83,7 +82,7 @@ class CaseCompilation(ast.NodeVisitor):
         raise_ = raise_not_match(i)
         self.block.append(if_else(cond, [raise_], []))
 
-    def visit_List(self, tp: ast.List):
+    def visit_List(self, tp):
         ids = [self.pat.next_id for _ in tp.elts]
         lhs_elts = []
         cases = []
@@ -119,7 +118,7 @@ class CaseCompilation(ast.NodeVisitor):
             CaseCompilation(id_, self.captures, self.block, self.pat).visit(case)
 
 
-    def visit_Tuple(self, tp: ast.Tuple):
+    def visit_Tuple(self, tp):
         ids = [self.pat.next_id for _ in tp.elts]
         lhs_elts = []
         cases = []
@@ -143,7 +142,7 @@ class CaseCompilation(ast.NodeVisitor):
         check_len = compare(len_of_val, ast.GtE() if has_star else ast.Eq(), ast.Constant(len(cases)))
         check_type = ast.Call(
                         func = ast.Name("isinstance", ctx=ast.Load()),
-                        args=[self.val_to_match, ast.Name("Tuple", ctx=ast.Load())],
+                        args=[self.val_to_match, ast.Name("tuple", ctx=ast.Load())],
                         keywords=[])
         check = ast.BoolOp(op=ast.And(), values=[check_type, check_len])
         self.block.append(if_not_else(check, [raise_not_match(tp)], []))
@@ -153,7 +152,7 @@ class CaseCompilation(ast.NodeVisitor):
         for id_, case in zip(ids, cases):
             CaseCompilation(id_, self.captures, self.block, self.pat).visit(case)
 
-    def visit_Call(self, call: ast.Call):
+    def visit_Call(self, call):
         """
         for constructors/recognizers
         """
@@ -181,11 +180,12 @@ class PatternMatching(ast.NodeTransformer):
     def next_id(self):
         return next(self.local_id_generator)
 
-    def visit_With(self, node: ast.With):
+    def visit_With(self, node):
         # check if is the form:
         # ```
-        # with case(_)
+        # with match(_)
         # ```
+
         if not len(node.items):
             return self.generic_visit(node)
 

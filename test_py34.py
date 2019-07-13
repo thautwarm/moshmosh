@@ -28,7 +28,7 @@ assert f2(5) == 120
 @syntax_rule(pattern_matching)
 def f3(x):
     with match(x):
-        if case[[1, *x]]:
+        if case[[1, x]]:
             print(x)
             return sum(x)
         if case[(1, x, y)]: return x + y
