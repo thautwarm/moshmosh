@@ -1,6 +1,6 @@
 # Moshmosh
 
-![example.png](./https://raw.githubusercontent.com/thautwarm/moshmosh/master/example.png)
+![example.png](https://raw.githubusercontent.com/thautwarm/moshmosh/master/example.png)
 
 The TRUE implementation of pattern matching for Python.
 
