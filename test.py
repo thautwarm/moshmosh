@@ -1,8 +1,6 @@
 from pattern_matching import *
-
 class MatchError(Exception):
     pass
-
 
 class C:
     @classmethod
@@ -17,7 +15,6 @@ def f1(x):
         if case[C(C(a, b), C(c, d))]: print(a, b, c, d)
 
 f1(1)
-
 
 @syntax_rule(pattern_matching)
 def f2(x, r=1):

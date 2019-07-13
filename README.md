@@ -1,5 +1,7 @@
 # Moshmosh
 
+![example.png](./https://raw.githubusercontent.com/thautwarm/moshmosh/master/example.png)
+
 The TRUE implementation of pattern matching for Python.
 
 For more than pattern matching, check `syntax_rule.py`.
