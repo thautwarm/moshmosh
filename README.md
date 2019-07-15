@@ -38,7 +38,7 @@ Installation: `pip install moshmosh-syntax`.
 Check benchmark.py.
 
 Although Pampy is much weaker than moshmosh, it's also much slower than moshmosh :) .
-Note tha moshmosh is currently a simple prototype implemented in few hours.
+Note that moshmosh is currently a simple prototype implemented in few hours.
 
 Thus we can safely conclude, **A true one is always better than the fakers**.
 
