@@ -1,3 +1,5 @@
+# moshmosh?
+# +template-python
 from io import StringIO
 
 from moshmosh.ast_compat import ast

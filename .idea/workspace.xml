@@ -2,22 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f31ebd8d-2c6a-4919-a736-e8678f3d97d9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/moshmosh/extensions/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/startup_plugin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/match.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.pyi" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/runtime.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/test_core.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/redbq.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/redbq.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/moshmosh/extension.py" beforeDir="false" afterPath="$PROJECT_DIR$/moshmosh/extension.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moshmosh/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/moshmosh/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moshmosh/ctx_fix.py" beforeDir="false" afterPath="$PROJECT_DIR$/moshmosh/ctx_fix.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/moshmosh/extension_register.py" beforeDir="false" afterPath="$PROJECT_DIR$/moshmosh/extension_register.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/moshmosh/pattern_matching.py" beforeDir="false" afterPath="$PROJECT_DIR$/moshmosh/extensions/pattern_matching.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/moshmosh/template_python.py" beforeDir="false" afterPath="$PROJECT_DIR$/moshmosh/extensions/template_python.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/complex_match.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_py34.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/complex_match-py34.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moshmosh/extensions/pattern_matching.py" beforeDir="false" afterPath="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/wain.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/moshmosh/extensions/template_python.py" beforeDir="false" afterPath="$PROJECT_DIR$/moshmosh/extensions/template_python.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/ast_shape.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/ast_shape.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/sample.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/template_python.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/sample2.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,106 +28,135 @@
     <SUITE FILE_PATH="coverage/moshmosh$test.coverage" NAME="test Coverage Results" MODIFIED="1562948329465" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/moshmosh/extension.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-213">
-              <caret line="185" column="4" selection-start-line="185" selection-start-column="4" selection-end-line="185" selection-end-column="4" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="3" column="43" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="43" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/match.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="5" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="19" column="52" lean-forward="true" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/template_python.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="14" selection-end-column="16" />
-              <folding>
-                <element signature="e#75#85#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/complex_match.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="20">
-              <caret line="1" selection-start-line="1" selection-end-line="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/complex_match-py34.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/moshmosh/extensions/template_python.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="15" column="29" lean-forward="true" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/ast_shape.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="3" selection-start-line="3" selection-end-line="3" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/wain.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state>
+                  <caret selection-end-line="1" selection-end-column="18" />
+                  <folding>
+                    <element signature="e#0#23#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/main.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="80">
+                  <caret line="4" column="46" selection-start-line="4" selection-start-column="46" selection-end-line="4" selection-end-column="46" />
+                  <folding>
+                    <element signature="e#0#10#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.pyi">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="407">
+                  <caret line="41" selection-start-line="41" selection-end-line="41" />
+                  <folding>
+                    <element signature="e#0#18#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="240">
+                  <caret line="12" column="15" selection-start-line="12" selection-start-column="15" selection-end-line="12" selection-end-column="15" />
+                  <folding>
+                    <element signature="e#31#41#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/runtime.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="80">
+                  <caret line="4" column="16" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/tests/test_core.py">
+              <provider selected="true" editor-type-id="text-editor" />
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/__init__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="20">
+                  <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+                  <folding>
+                    <element signature="e#0#19#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/moshmosh/__init__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="40">
+                  <caret line="2" column="40" selection-start-line="2" selection-start-column="40" selection-end-line="2" selection-end-column="40" />
+                  <folding>
+                    <element signature="e#0#33#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/tests/__init__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="80">
+                  <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/moshmosh/extensions/template_python.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="180">
+                  <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+                  <folding>
+                    <element signature="e#0#10#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.pyi">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="80">
+                  <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
+                  <folding>
+                    <element signature="e#0#18#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -156,7 +184,13 @@
       <find>FileLoader</find>
       <find>SourceLoader</find>
       <find>get_data</find>
+      <find>self</find>
+      <find>.RET</find>
+      <find>RET</find>
     </findStrings>
+    <replaceStrings>
+      <replace>cls</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -172,7 +206,6 @@
         <option value="$PROJECT_DIR$/tests/sample2.py" />
         <option value="$PROJECT_DIR$/moshmosh/register.py" />
         <option value="$PROJECT_DIR$/moshmosh/syntax_rule.py" />
-        <option value="$PROJECT_DIR$/moshmosh/__init__.py" />
         <option value="$PROJECT_DIR$/ChangeLog.md" />
         <option value="$PROJECT_DIR$/moshmosh/sexpr.py" />
         <option value="$PROJECT_DIR$/moshmosh/macro.py" />
@@ -180,7 +213,6 @@
         <option value="$USER_HOME$/.local/lib/python3.7/site-packages/rbnf_rts/unparse.py" />
         <option value="$PROJECT_DIR$/moshmosh/rewrite_helper.py" />
         <option value="$PROJECT_DIR$/tests/sample.py" />
-        <option value="$PROJECT_DIR$/moshmosh/ctx_fix.py" />
         <option value="$PROJECT_DIR$/moshmosh/template_python.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/moshmosh/pattern_matching.py" />
@@ -190,14 +222,24 @@
         <option value="$PROJECT_DIR$/tests/complex_match.py" />
         <option value="$PROJECT_DIR$/tests/match.py" />
         <option value="$PROJECT_DIR$/moshmosh/syntax_extension.py" />
-        <option value="$PROJECT_DIR$/moshmosh/extension_register.py" />
         <option value="$PROJECT_DIR$/moshmosh/extension.py" />
-        <option value="$PROJECT_DIR$/tests/__init__.py" />
         <option value="$PROJECT_DIR$/tests/ast_shape.py" />
-        <option value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching.py" />
-        <option value="$PROJECT_DIR$/moshmosh/extensions/template_python.py" />
         <option value="$PROJECT_DIR$/tests/template_python.py" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/moshmosh/extension_register.py" />
+        <option value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching.py" />
+        <option value="$PROJECT_DIR$/moshmosh/ctx_fix.py" />
+        <option value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/impl.py" />
+        <option value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/__init__.py" />
+        <option value="$PROJECT_DIR$/moshmosh/extensions/template_python.py" />
+        <option value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.pyi.py" />
+        <option value="$PROJECT_DIR$/moshmosh/__init__.py" />
+        <option value="$PROJECT_DIR$/tests/__init__.py" />
+        <option value="$PROJECT_DIR$/tests/test_core.py" />
+        <option value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/runtime.py" />
+        <option value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.pyi" />
+        <option value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.py" />
+        <option value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/main.py" />
       </list>
     </option>
   </component>
@@ -235,6 +277,13 @@
             <path>
               <item name="moshmosh" type="b2602c69:ProjectViewProjectNode" />
               <item name="moshmosh" type="462c0819:PsiDirectoryNode" />
+              <item name="moshmosh" type="462c0819:PsiDirectoryNode" />
+              <item name="extensions" type="462c0819:PsiDirectoryNode" />
+              <item name="pattern_matching" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="moshmosh" type="b2602c69:ProjectViewProjectNode" />
+              <item name="moshmosh" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -253,6 +302,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/moshmosh/extensions/pattern_matching" />
       <recent name="$PROJECT_DIR$/moshmosh/extensions" />
       <recent name="$PROJECT_DIR$/tests" />
     </key>
@@ -269,7 +319,28 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.__init__">
+  <component name="RunManager" selected="Python.test_core">
+    <configuration name="__init__ (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="moshmosh" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/moshmosh" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/moshmosh/__init__.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="moshmosh" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -312,7 +383,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="extension" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="core" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="moshmosh" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -320,11 +391,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/moshmosh" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/moshmosh/extension.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -333,7 +404,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="sample" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="test_core" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="moshmosh" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -345,28 +416,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/template_python.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="template" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="moshmosh" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/moshmosh" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/moshmosh/extensions/template_python.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/test_core.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -377,11 +427,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.test_core" />
+        <item itemvalue="Python.__init__ (1)" />
+        <item itemvalue="Python.core" />
         <item itemvalue="Python.__init__" />
         <item itemvalue="Python.ast_shape" />
-        <item itemvalue="Python.sample" />
-        <item itemvalue="Python.template" />
-        <item itemvalue="Python.extension" />
       </list>
     </recent_temporary>
   </component>
@@ -407,12 +457,12 @@
     <frame x="0" y="0" width="1920" height="1026" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25587606" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25587606" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32993197" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.5170068" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.6099773" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39909297" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -472,8 +522,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pattern_matching.py" />
-    <entry file="file://$PROJECT_DIR$/syntax_rule.py" />
     <entry file="file://$PROJECT_DIR$/LICENSE">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -552,9 +600,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/moshmosh/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/ChangeLog.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -628,13 +673,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/moshmosh/ctx_fix.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/.local/lib/python3.7/site-packages/julia/python_jl.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -697,23 +735,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/moshmosh/extension_register.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7">
-          <caret line="22" column="19" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="3" column="43" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/ast_shape.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -735,26 +756,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret selection-end-line="5" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/moshmosh/extensions/template_python.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="15" column="29" lean-forward="true" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -780,8 +781,115 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
+        <state relative-caret-position="-621">
           <caret line="19" column="52" lean-forward="true" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/extension_register.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/ctx_fix.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/extensions/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/extensions/template_python.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" column="22" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="2" column="40" selection-start-line="2" selection-start-column="40" selection-end-line="2" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_core.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="1" column="19" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/runtime.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="16" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.pyi">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="407">
+          <caret line="41" selection-start-line="41" selection-end-line="41" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/wain.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="1" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/core.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="12" column="15" selection-start-line="12" selection-start-column="15" selection-end-line="12" selection-end-column="15" />
+          <folding>
+            <element signature="e#31#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/moshmosh/extensions/pattern_matching/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" column="46" selection-start-line="4" selection-start-column="46" selection-end-line="4" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

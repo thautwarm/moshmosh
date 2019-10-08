@@ -5,6 +5,8 @@ from importlib._bootstrap_external import (
     PathFinder, FileLoader, SourceFileLoader, SourcelessFileLoader,
     ExtensionFileLoader)
 
+__all__ = []
+
 
 class ProxySourceFileLoader(SourceFileLoader):
     def __init__(self, loader: SourceFileLoader):

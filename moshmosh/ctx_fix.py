@@ -28,7 +28,8 @@ class ExprContextFixer(ast.NodeVisitor):
     def visit_AnnAssign(self, n: ast.AnnAssign):
         _store_writer.visit(n.target)
         self.generic_visit(n.annotation)
-        self.generic_visit(n.value)
+        if n.value:
+            self.generic_visit(n.value)
 
     def visit_AugAssign(self, n: ast.AugAssign):
         _store_writer.visit(n.target)

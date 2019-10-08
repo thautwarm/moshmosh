@@ -7,6 +7,8 @@ runtime_ast_build = '_ast_build'
 runtime_ast_copy = '_ast_copy'
 _fix_ast_ctx = ExprContextFixer().visit
 
+__all__ = ['build_ast']
+
 
 def build_ast(d):
     nodes = literal_build_ast(d)
