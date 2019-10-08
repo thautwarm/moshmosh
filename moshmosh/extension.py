@@ -1,4 +1,3 @@
-from abc import ABC
 from io import StringIO
 from moshmosh.rewrite_helper import ast_to_literal
 import ast
@@ -6,8 +5,11 @@ import abc
 import typing as t
 import re
 
-_extension_pragma_re = re.compile(
-    r'#\s*(?P<action>[+-])(?P<ext>[^(\s]+)\s*(\((?P<params>.*)\))?\s*$')
+_extension_token_b = re.compile(b"#\s*moshmosh\?\s*?")
+_extension_token_u = re.compile(r"#\s*moshmosh\?\s*?$")
+
+_extension_pragma_re_u = re.compile(
+    r'#\s*(?P<action>[+-])(?P<ext>[^(\s]+)\s*(\((?P<params>.*)\))?[^\S\n]*?')
 
 
 class Activation:
@@ -59,7 +61,7 @@ class ExtensionMeta(type):
         bases = tuple(filter(lambda it: Extension is not it, bases))
 
         ret: t.Type[RealExtension] = type(name, (*bases, RealExtension), ns)
-        Registered.extensions[ret.identifier()] = ret
+        Registered.extensions[ret.identifier] = ret
 
         return ret
 
@@ -79,14 +81,12 @@ class RealExtension:
     def activation(self, value):
         raise NotImplemented
 
-    @classmethod
+    @property
     @abc.abstractmethod
     def identifier(cls):
         "A string to indicate the class of extension instance."
         raise NotImplemented
 
-    @classmethod
-    @abc.abstractmethod
     def pre_rewrite_src(self, io: StringIO):
         pass
 
@@ -95,8 +95,6 @@ class RealExtension:
         "A function to perform AST level rewriting"
         raise NotImplemented
 
-    @classmethod
-    @abc.abstractmethod
     def post_rewrite_src(self, io: StringIO):
         pass
 
@@ -122,8 +120,6 @@ class Extension(metaclass=ExtensionMeta):
         "A string to indicate the class of extension instance."
         raise NotImplemented
 
-    @classmethod
-    @abc.abstractmethod
     def pre_rewrite_src(self, io: StringIO):
         pass
 
@@ -132,8 +128,6 @@ class Extension(metaclass=ExtensionMeta):
         "A function to perform AST level rewriting"
         raise NotImplemented
 
-    @classmethod
-    @abc.abstractmethod
     def post_rewrite_src(self, io: StringIO):
         pass
 
@@ -148,7 +142,7 @@ def extract_pragmas(lines):
     every extension.
     """
     # bind to local for faster visiting in the loop
-    extension_pragma_re = _extension_pragma_re
+    extension_pragma_re = _extension_pragma_re_u
     registered = Registered.extensions
     extension_builder: t.Dict[object, Extension] = {}
 
@@ -183,22 +177,16 @@ def extract_pragmas(lines):
     return list(extension_builder.values())
 
 
-def _no_exc_stack(f):
-    def perform_extension(source_code):
-        try:
-            return f(source_code)
-        except Exception as e:
-            import traceback
-            traceback.print_tb(e.__traceback__)
-            raise e
-
-    return perform_extension
-
-
-@_no_exc_stack
 def perform_extension(source_code):
-    # FIXME: Haskell-like syntax extension system
+    str_type = type(source_code)
+    extension_token = _extension_token_b if str_type is bytes else _extension_token_u
+    if not extension_token.match(source_code):
+        return source_code
+
     node = ast.parse(source_code)
+    if str_type is bytes:
+        source_code = source_code.decode('utf8')
+
     extensions = extract_pragmas(StringIO(source_code))
 
     string_io = StringIO()
@@ -238,4 +226,4 @@ def _literal_to_ast(literal):
         each.post_rewrite_src(string_io)
 
     code = string_io.getvalue()
-    return code
+    return bytes(code, encoding='utf8')

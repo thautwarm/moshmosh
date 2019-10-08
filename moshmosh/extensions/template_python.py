@@ -9,8 +9,12 @@ _fix_ast_ctx = ExprContextFixer().visit
 
 
 def build_ast(d):
-    node = literal_build_ast(d)
-    return fix_ast_ctx(node)
+    nodes = literal_build_ast(d)
+    nodes = fix_ast_ctx(nodes)
+
+    mock = ast.Module(nodes)
+    ast.fix_missing_locations(mock)
+    return mock.body
 
 
 def fix_ast_ctx(node):
@@ -117,6 +121,7 @@ class MacroTransform(ast.NodeTransformer):
 class Template(Extension):
 
     __slots__ = ('activation', )
+    identifier = "template-python"
     activation: Activation
 
     def __init__(self, token="quote"):
@@ -124,14 +129,9 @@ class Template(Extension):
         self.token = token
 
     def pre_rewrite_src(self, io):
-        io.write(
-            'from moshmosh.template_python import build_ast as {}\n'.format(
-                runtime_ast_build))
+        io.write('from {} import build_ast as {}\n'.format(
+            __name__, runtime_ast_build))
         io.write('from copy import deepcopy as {}\n'.format(runtime_ast_copy))
-
-    @classmethod
-    def identifier(cls):
-        return "template-python"
 
     def rewrite_ast(self, node: ast.AST):
         node = MacroTransform(self.activation, self.token).visit(node)

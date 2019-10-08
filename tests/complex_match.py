@@ -1,6 +1,5 @@
-from moshmosh.pattern_matching import *
-class MatchError(Exception):
-    pass
+# moshmosh?
+# +pattern-matching
 
 class C:
     @classmethod
@@ -9,14 +8,12 @@ class C:
             raise MatchError
         return x, x
 
-@syntax_rule(pattern_matching)
 def f1(x):
     with match(x):
         if case[C(C(a, b), C(c, d))]: return (a, b, c, d)
 
 assert f1(1) == (1, ) * 4
 
-@syntax_rule(pattern_matching)
 def f2(x, r=1):
     with match(x):
         if case[0]: return r
@@ -25,7 +22,6 @@ def f2(x, r=1):
 assert f2(5) == 120
 
 
-@syntax_rule(pattern_matching)
 def f3(x):
     with match(x):
         if case[[1, *x]]:

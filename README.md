@@ -1,49 +1,85 @@
 # Moshmosh
 
-**Attention!!**: this project is not ready for practical use, because it just provides poor error reporting.
+An advanced syntax extension system implemented in pure python.
 
-![example.png](https://raw.githubusercontent.com/thautwarm/moshmosh/master/example.png)
-
-The TRUE implementation of pattern matching for Python.
-
-For more than pattern matching, check `syntax_rule.py`.
+# Extension Syntax
 
 ```python
-@syntax_rule(pattern_matching)
-def f(x, r=1):
-    with match(x):
-        if case[0]: return 1
-        if case[x]: return f(x-1, r * x)
+# moshmosh?
 
-return f(10)
+# Use extension
+# +<extension name>[<extension arg>{','}]
+
+<do stuff with your extensions>
+
+# Unset extension
+# -<extension name>[<extension arg>{','}]
 ```
 
-Installation: `pip install moshmosh-syntax`.
+The first line of the file should start with a comment `# moshmosh?`, which tells us
+that it's expected to use Moshmosh extension system.
 
+## Case Study : Pattern Matching
 
-# Features
+```python
+# moshmosh?
+# +pattern-matching
 
-- [x] Tree pattern matching: `if case[C1(C2(1), "")]: ...`
+with match(114, 514):
+    if case[(a, b)]:
+        print(a)
 
-- [x] Unlike projects using `inspect.getsource`, syntax extensions are achieved without evil IO operations or requiring source files.
+# => 114
+```
 
-- [x] Literal patterns:
-    - [x] string, number and other constant patterns
-    - [x] tuple, list patterns
+## Case Study : Template-Python
 
-- [x] Provided with the capabilities to customize semantics of python syntaxes.
+```python
+# moshmosh?
+# +template-python
 
-# Benchmarks
+@quote
+def f(x):
+    x + 1
+    x = y + 1
 
-Check benchmark.py.
+import ast
+from astpretty import pprint
 
-Although Pampy is much weaker than moshmosh, it's also much slower than moshmosh :) .
-Note that moshmosh is currently a simple prototype implemented in few hours.
+stmts = f(ast.Name("a"))
+pprint(stmts[0])
+pprint(stmts[1])
 
-Thus we can safely conclude, **A true one is always better than the fakers**.
+# =>
+Expr(
+    lineno=7,
+    col_offset=4,
+    value=BinOp(
+        lineno=7,
+        col_offset=4,
+        left=Name(lineno=7, col_offset=4, id='a', ctx=Load()),
+        op=Add(),
+        right=Num(lineno=7, col_offset=8, n=1),
+    ),
+)
+Assign(
+    lineno=8,
+    col_offset=4,
+    targets=[Name(lineno=8, col_offset=4, id='a', ctx=Store())],
+    value=BinOp(
+        lineno=8,
+        col_offset=8,
+        left=Name(lineno=8, col_offset=8, id='y', ctx=Load()),
+        op=Add(),
+        right=Num(lineno=8, col_offset=12, n=1),
+    ),
+)
+```
 
 ## Acknowledgements
 
-See [older implementations](http://www.grantjenks.com/docs/patternmatching/#alternative-packages) and search "pattern matching" in [Python-ideas](https://mail.python.org/archives/list/python-ideas@python.org/).
 
-Salute all the people used to work for Python pattern matching.
+- [future-fstrings](https://github.com/asottile/future-fstrings)
+- Pattern matching in Python
+    - [older implementations](http://www.grantjenks.com/docs/patternmatching/#alternative-packages)
+    - search "pattern matching" at [Python-ideas](https://mail.python.org/archives/list/python-ideas@python.org/).

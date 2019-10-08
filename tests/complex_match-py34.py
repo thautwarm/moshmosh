@@ -1,4 +1,4 @@
-from moshmosh.pattern_matching import *
+from moshmosh.extensions.pattern_matching import *
 class MatchError(Exception):
     pass
 

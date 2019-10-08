@@ -1,6 +1,12 @@
-from .ast_compat import ast
-from .extension import Extension, Activation
+from io import StringIO
+
+from moshmosh.ast_compat import ast
+from moshmosh.extension import Extension, Activation
 import typing as t
+
+
+class MatchError(Exception):
+    pass
 
 
 def compare(v1, op, v2):
@@ -216,7 +222,8 @@ class PatternMatching(ast.NodeTransformer):
         if not isinstance(fn, ast.Name) or fn.id != self.token:
             return self.generic_visit(node)
         # check if is `match(val)`
-        assert not item.keywords and len(item.args) == 1
+        assert not item.keywords
+
         # check if all stmts in the with block are in the form
         # `if case[<pattern>]: stmts`
         #
@@ -224,8 +231,11 @@ class PatternMatching(ast.NodeTransformer):
         # A: `if 0` will be removed after decompilation.
 
         assert all(isinstance(stmt, ast.If) for stmt in node.body)
+        if len(item.args) is not 1:
+            val_to_match = ast.Tuple(item.args, ast.Load())
+        else:
+            val_to_match = item.args[0]
 
-        val_to_match = item.args[0]
         name_of_val_to_match = self.next_id
 
         ifs = node.body  # type: t.List[ast.If]
@@ -235,7 +245,7 @@ class PatternMatching(ast.NodeTransformer):
                 body=if_matched_br_,
                 handlers=[
                     ast.ExceptHandler(
-                        type=ast.Name("MatchError", ctx=ast.Load()),
+                        type=ast.Name(MatchError.__name__, ctx=ast.Load()),
                         name=None,
                         body=not_matched_br_),
                 ],
@@ -275,14 +285,15 @@ class PatternMatching(ast.NodeTransformer):
 
 
 class PatternMatchingExtension(Extension):
+
     __slots__ = ('tokens', 'activation')
+    identifier = 'pattern-matching'
+
+    def pre_rewrite_src(self, io: StringIO):
+        io.write('from {} import {}\n'.format(__name__, MatchError.__name__))
 
     def rewrite_ast(self, node: ast.AST):
         return PatternMatching(self.activation, self.token).visit(node)
-
-    @classmethod
-    def identifier(cls):
-        return 'pattern-matching'
 
     activation: Activation
 

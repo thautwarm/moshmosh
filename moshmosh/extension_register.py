@@ -1,60 +1,43 @@
-"""
-The original idea is originated from
-    https://github.com/asottile/future-fstrings
-"""
+import sys
 from moshmosh.extension import perform_extension
-import codecs
-import encodings
-import io
-
-utf_8 = encodings.search_function('utf8')
-
-
-def rewrite(text, errors='strict'):
-    u, length = utf_8.decode(text, errors)
-    u = perform_extension(u)
-    return u, length
+from importlib._bootstrap import ModuleSpec
+from importlib._bootstrap_external import (
+    PathFinder, FileLoader, SourceFileLoader, SourcelessFileLoader,
+    ExtensionFileLoader)
 
 
-class IncrementalDecoder(codecs.BufferedIncrementalDecoder):
-    def _buffer_decode(self, input, errors, final):  # pragma: no cover
-        if final:
-            return rewrite(input, errors)
-        else:
-            return '', 0
+class ProxySourceFileLoader(SourceFileLoader):
+    def __init__(self, loader: SourceFileLoader):
+        SourceFileLoader.__init__(self, loader.name, loader.path)
+
+    def get_data(self, path: str):
+        data = SourceFileLoader.get_data(self, path)
+        return perform_extension(data)
 
 
-class StreamReader(utf_8.streamreader, object):
-    """decode is deferred to support better error messages"""
-    _stream = None
-    _decoded = False
+class ProxySourcelessLoader(SourcelessFileLoader):
+    def __init__(self, loader: SourcelessFileLoader):
+        SourcelessFileLoader.__init__(self, loader.name, loader.path)
 
-    @property
-    def stream(self):
-        if not self._decoded:
-
-            text, _ = rewrite(self._stream.read())
-            self._stream = io.BytesIO(text.encode('UTF-8'))
-            self._decoded = True
-        return self._stream
-
-    @stream.setter
-    def stream(self, stream):
-        self._stream = stream
-        self._decoded = False
+    def get_data(self, path: str):
+        data = SourcelessFileLoader.get_data(self, path)
+        return perform_extension(data)
 
 
-codec_map = {
-    name: codecs.CodecInfo(
-        name=name,
-        encode=utf_8.encode,
-        decode=rewrite,
-        incrementalencoder=utf_8.incrementalencoder,
-        incrementaldecoder=IncrementalDecoder,
-        streamreader=StreamReader,
-        streamwriter=utf_8.streamwriter,
-    )
-    for name in ('extension', )
-}
+class MoshmoshFinder(PathFinder):
+    @classmethod
+    def find_spec(cls, fullname, path=None, target=None):
+        spec: ModuleSpec = PathFinder.find_spec(fullname, path, target)
+        if spec and spec.loader and isinstance(spec.loader, FileLoader):
+            loader = spec.loader
+            loader_ty = loader.__class__
+            loader_ = {
+                SourcelessFileLoader: lambda: ProxySourcelessLoader(loader),
+                SourceFileLoader: lambda: ProxySourceFileLoader(loader),
+                ExtensionFileLoader: lambda: loader
+            }[loader_ty]()
+            spec.loader = loader_
+        return spec
 
-codecs.register(codec_map.get)
+
+sys.meta_path.insert(0, MoshmoshFinder)
