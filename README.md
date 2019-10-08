@@ -2,7 +2,7 @@
 
 An advanced syntax extension system implemented in pure python.
 
-# Extension Syntax
+# Preview
 
 ```python
 # moshmosh?
