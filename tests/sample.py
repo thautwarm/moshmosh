@@ -1,11 +1,16 @@
 # -*- coding: extension -*-
-# +pattern-matching
-class MatchError(Exception):
-    pass
+# +template-python
 
-with match(1):
-    if case[0]:
-        print(2)
-    if case[a]:
-        print(a + 2)
+@quote
+def f(x):
+    x = x, y
+    return x
 
+
+import ast
+from astpretty import pprint
+suite = f(ast.Name("aks", ast.Load()))
+node = ast.Module(suite)
+ast.fix_missing_locations(node)
+from astpretty import pprint
+pprint(node)

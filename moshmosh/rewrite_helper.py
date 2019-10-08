@@ -1,7 +1,7 @@
 import ast
 
 
-def ast_to_literal(node: ast.AST):
+def ast_to_literal(node):
     """
     Convert an AST to a python literal.
     We avoid the use of comprehension expressions here
@@ -11,7 +11,7 @@ def ast_to_literal(node: ast.AST):
         field_names = node._fields
         res = {'constructor': node.__class__.__name__}
         for field_name in field_names:
-            field = getattr(node, field_name)
+            field = getattr(node, field_name, None)
             field = ast_to_literal(field)
             res[field_name] = field
         if hasattr(node, 'lineno'):
@@ -41,3 +41,4 @@ def literal_to_ast(literal):
         return list(map(literal_to_ast, literal))
 
     return literal
+

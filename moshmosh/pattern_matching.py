@@ -1,5 +1,5 @@
 from .ast_compat import ast
-from .extension import Extension, Activation, Registered
+from .extension import Extension, Activation
 import typing as t
 
 
@@ -277,7 +277,7 @@ class PatternMatching(ast.NodeTransformer):
 class PatternMatchingExtension(Extension):
     __slots__ = ('tokens', 'activation')
 
-    def rewrite(self, node: ast.AST):
+    def rewrite_ast(self, node: ast.AST):
         return PatternMatching(self.activation, self.token).visit(node)
 
     @classmethod

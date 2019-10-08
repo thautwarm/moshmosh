@@ -1,3 +1,4 @@
 import moshmosh.extension_register
 import moshmosh.pattern_matching
+import moshmosh.template_python
 import tests.sample

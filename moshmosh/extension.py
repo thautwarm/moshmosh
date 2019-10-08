@@ -85,10 +85,20 @@ class RealExtension:
         "A string to indicate the class of extension instance."
         raise NotImplemented
 
+    @classmethod
     @abc.abstractmethod
-    def rewrite(self, node: ast.AST):
+    def pre_rewrite_src(self, io: StringIO):
+        pass
+
+    @abc.abstractmethod
+    def rewrite_ast(self, node: ast.AST):
         "A function to perform AST level rewriting"
         raise NotImplemented
+
+    @classmethod
+    @abc.abstractmethod
+    def post_rewrite_src(self, io: StringIO):
+        pass
 
 
 class Extension(metaclass=ExtensionMeta):
@@ -112,10 +122,20 @@ class Extension(metaclass=ExtensionMeta):
         "A string to indicate the class of extension instance."
         raise NotImplemented
 
+    @classmethod
     @abc.abstractmethod
-    def rewrite(self, node: ast.AST):
+    def pre_rewrite_src(self, io: StringIO):
+        pass
+
+    @abc.abstractmethod
+    def rewrite_ast(self, node: ast.AST):
         "A function to perform AST level rewriting"
         raise NotImplemented
+
+    @classmethod
+    @abc.abstractmethod
+    def post_rewrite_src(self, io: StringIO):
+        pass
 
 
 class Registered:
@@ -163,17 +183,32 @@ def extract_pragmas(lines):
     return list(extension_builder.values())
 
 
+def _no_exc_stack(f):
+    def perform_extension(source_code):
+        try:
+            return f(source_code)
+        except Exception as e:
+            import traceback
+            traceback.print_tb(e.__traceback__)
+            raise e
+
+    return perform_extension
+
+
+@_no_exc_stack
 def perform_extension(source_code):
     # FIXME: Haskell-like syntax extension system
     node = ast.parse(source_code)
     extensions = extract_pragmas(StringIO(source_code))
 
-    for each in extensions:
-        node = each.rewrite(node)
-        ast.fix_missing_locations(node)
-
-    literal = ast_to_literal(node)
     string_io = StringIO()
+    for each in extensions:
+        each.pre_rewrite_src(string_io)
+
+    for each in extensions:
+        node = each.rewrite_ast(node)
+        ast.fix_missing_locations(node)
+    literal = ast_to_literal(node)
     string_io.write("""
 import ast as _ast
 def _literal_to_ast(literal):
@@ -198,7 +233,9 @@ def _literal_to_ast(literal):
     string_io.write('__ast__ = _literal_to_ast(__literal__)\n')
     string_io.write('__code__ = compile(__ast__, __file__, "exec")\n')
     string_io.write('exec(__code__, globals())\n')
+
+    for each in extensions:
+        each.post_rewrite_src(string_io)
+
     code = string_io.getvalue()
-    from .extension_register import clear_cache
-    clear_cache()
     return code
