@@ -1,2 +1,2 @@
-from .wain import *
+from .main import *
 from .core import *

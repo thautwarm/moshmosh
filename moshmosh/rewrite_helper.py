@@ -35,10 +35,10 @@ def literal_to_ast(literal):
     if isinstance(literal, dict):
         ctor = literal.pop('constructor')
         ctor = getattr(ast, ctor)
+
         return ctor(**{k: literal_to_ast(v) for k, v in literal.items()})
 
     if isinstance(literal, list):
         return list(map(literal_to_ast, literal))
 
     return literal
-

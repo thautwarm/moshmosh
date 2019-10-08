@@ -2,12 +2,27 @@ import ast as _ast
 from types import ModuleType
 from sys import version_info
 
+from numbers import Number
+
+
+class SupertypeMeta(type):
+    def __instancecheck__(self, other):
+        return isinstance(other, self._sup_cls)
+
+
+class ConsistentConstant(metaclass=SupertypeMeta):
+    _sup_cls = (_ast.Num, _ast.NameConstant, _ast.Str)
+
+    def __new__(self, i):
+        if isinstance(i, Number):
+            return ast.Num(i)
+        if isinstance(i, str):
+            return ast.Str(i)
+        return ast.NameConstant(i)
+
+
 if version_info < (3, 7):
     ast = ModuleType("ast", _ast.__doc__)
-
-    class SupertypeMeta(type):
-        def __instancecheck__(self, other):
-            return isinstance(other, self._sup_cls)
 
     def make_new_init(supercls, fields_):
         def init(self, *args, **kwargs):
@@ -31,17 +46,9 @@ if version_info < (3, 7):
         setattr(ast, k, v)
 
     if not hasattr(_ast, "Constant"):
-        from numbers import Number
 
-        class Constant(metaclass=SupertypeMeta):
-            _sup_cls = (_ast.Num, _ast.NameConstant, _ast.Str)
-
-            def __new__(self, i):
-                if isinstance(i, Number):
-                    return ast.Num(i)
-                if isinstance(i, str):
-                    return ast.Str(i)
-                return ast.NameConstant(i)
+        class Constant(ConsistentConstant):
+            pass
 
         ast.Constant = Constant
 

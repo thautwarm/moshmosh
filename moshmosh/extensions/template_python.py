@@ -43,6 +43,8 @@ def literal_build_ast(literal):
             each = literal_build_ast(each)
             if isinstance(each, list):
                 res.extend(each)
+            elif isinstance(each, ast.Expr) and isinstance(each.value, list):
+                res.extend(each.value)
             else:
                 res.append(each)
         return res

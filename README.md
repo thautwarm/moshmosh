@@ -25,12 +25,51 @@ that it's expected to use Moshmosh extension system.
 # moshmosh?
 # +pattern-matching
 
-with match(114, 514):
-    if case[(a, b)]:
-        print(a)
+class GreaterThan:
+    def __init__(self, v):
+        self.v = v
 
-# => 114
+    def __match__(self, cnt: int, to_match):
+        if isinstance(to_match, int) and cnt is 0 and to_match > self.v:
+            return () # matched
+        # 'return None' indicates 'unmatched'
+
+with match(114, 514):
+    if (GreaterThan(42)() and a, b):
+        print(b, a)
 ```
+
+The syntax of pattern matching:
+```python
+
+# +pattern-matching(token_name='match')
+
+with <token_name>(value):
+    if pat1:
+        body1
+    if pat2:
+        body2
+    ...
+```
+
+The matching should be exhaustive, otherwise,
+a `moshmosh.extensions.pattern_matching.runtime.NotExhaustive`
+might get raised.
+
+Supported Patterns:
+- And pattern: `pat1 and pat2 and pat3 ...`
+- Or pattern: `pat1 or pat2 or pat3...`
+- Pin pattern: `pin(value)`
+- Literal pattern: `1, "str", 1+2j, (1, 2),`
+- As pattern: `a, var`
+- Wildcard: `_`
+- Nested patterns:
+    - Tuple: `(pat1, pat2, pat3)`
+    - List:  `[pat1, pat2, pat3]`
+    - Recogniser: `Cons(pat1, pat2, pat3)`, note that,
+        the function `Cons.__match__(<n arg>, value_to_match)` is exact the protocol.
+
+
 
 ## Case Study : Template-Python
 
@@ -77,7 +116,6 @@ Assign(
 ```
 
 ## Acknowledgements
-
 
 - [future-fstrings](https://github.com/asottile/future-fstrings)
 - Pattern matching in Python

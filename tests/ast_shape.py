@@ -7,9 +7,5 @@ print_ast = ast.Name("print", ast.Load())
 
 pprint(parse("""
 
-try:
-    a
-except Ex as e:
-    print(e)
     
 """))

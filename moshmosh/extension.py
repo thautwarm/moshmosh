@@ -4,7 +4,7 @@ import ast
 import abc
 import typing as t
 import re
-
+import traceback
 _extension_token_b = re.compile(b"#\s*moshmosh\?\s*?")
 _extension_token_u = re.compile(r"#\s*moshmosh\?\s*?$")
 
@@ -177,6 +177,18 @@ def extract_pragmas(lines):
     return list(extension_builder.values())
 
 
+def _stack_exc(f):
+    def apply(source_code):
+        try:
+            return f(source_code)
+        except Exception as e:
+            traceback.print_tb(e.__traceback__)
+            raise e
+
+    return apply
+
+
+@_stack_exc
 def perform_extension(source_code):
     str_type = type(source_code)
     extension_token = _extension_token_b if str_type is bytes else _extension_token_u
@@ -196,6 +208,7 @@ def perform_extension(source_code):
     for each in extensions:
         node = each.rewrite_ast(node)
         ast.fix_missing_locations(node)
+
     literal = ast_to_literal(node)
     string_io.write("""
 import ast as _ast
@@ -218,7 +231,7 @@ def _literal_to_ast(literal):
     string_io.write('__literal__ = ')
     string_io.write(repr(literal))
     string_io.write('\n')
-    string_io.write('__ast__ = _literal_to_ast(__literal__)\n')
+    string_io.write("__ast__ = _literal_to_ast(__literal__)\n")
     string_io.write('__code__ = compile(__ast__, __file__, "exec")\n')
     string_io.write('exec(__code__, globals())\n')
 
