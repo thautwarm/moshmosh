@@ -1,2 +1,3 @@
 import moshmosh.extension_register
-import tests.sample2
+import moshmosh.pattern_matching
+import tests.sample
