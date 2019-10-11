@@ -1,9 +1,10 @@
 import sys
-from moshmosh.extension import perform_extension
+from moshmosh.extension import perform_extension, check_if_use_moshmosh_sys
 from importlib._bootstrap import ModuleSpec
-from importlib._bootstrap_external import (
-    PathFinder, FileLoader, SourceFileLoader, SourcelessFileLoader,
-    ExtensionFileLoader)
+from importlib._bootstrap_external import (PathFinder, FileLoader,
+                                           SourceFileLoader,
+                                           SourcelessFileLoader,
+                                           ExtensionFileLoader)
 
 __all__ = []
 
@@ -14,7 +15,9 @@ class ProxySourceFileLoader(SourceFileLoader):
 
     def get_data(self, path: str):
         data = SourceFileLoader.get_data(self, path)
-        return perform_extension(data)
+        if check_if_use_moshmosh_sys(data):
+            return perform_extension(data)
+        return data
 
 
 class ProxySourcelessLoader(SourcelessFileLoader):
@@ -23,7 +26,9 @@ class ProxySourcelessLoader(SourcelessFileLoader):
 
     def get_data(self, path: str):
         data = SourcelessFileLoader.get_data(self, path)
-        return perform_extension(data)
+        if check_if_use_moshmosh_sys(data):
+            return perform_extension(data)
+        return data
 
 
 class MoshmoshFinder(PathFinder):

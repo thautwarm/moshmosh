@@ -15,7 +15,6 @@ _extension_pragma_re_u = re.compile(
 class Activation:
     """This sort of instances tell us
     whether an extension is enabled at a specific line number"""
-
     def __init__(self):
         self.intervals = []
 
@@ -70,7 +69,6 @@ class RealExtension:
     """
     An abstraction among syntax extensions
     """
-
     @property
     @abc.abstractmethod
     def activation(self) -> Activation:
@@ -188,12 +186,16 @@ def _stack_exc(f):
     return apply
 
 
-@_stack_exc
-def perform_extension(source_code):
+def check_if_use_moshmosh_sys(source_code):
     str_type = type(source_code)
     extension_token = _extension_token_b if str_type is bytes else _extension_token_u
-    if not extension_token.match(source_code):
-        return source_code
+    return bool(extension_token.match(source_code))
+
+
+@_stack_exc
+def perform_extension(source_code):
+
+    str_type = type(source_code)
 
     node = ast.parse(source_code)
     if str_type is bytes:
@@ -239,4 +241,6 @@ def _literal_to_ast(literal):
         each.post_rewrite_src(string_io)
 
     code = string_io.getvalue()
-    return bytes(code, encoding='utf8')
+    if str_type is bytes:
+        code = bytes(code, encoding='utf8')
+    return code

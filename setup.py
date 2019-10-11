@@ -6,7 +6,7 @@ with open('README.md') as readme:
 version = "0.1.1"
 
 setup(
-    name='moshmosh-syntax',
+    name='moshmosh-base',
     version=version if isinstance(version, str) else str(version),
     keywords="syntax extension, macro, pattern matching", # keywords of your project separated by comma ","
     description="A hygienic syntax extension system for Python", # a concise introduction of your project
@@ -21,7 +21,7 @@ setup(
     entry_points={"console_scripts": []},
     # above option specifies commands to be installed,
     # e.g: entry_points={"console_scripts": ["yapypy=yapypy.cmd.compiler"]}
-    install_requires=["uncompyle6"],
+    install_requires=["toolz"],
     platforms="any",
     classifiers=[
         "Programming Language :: Python :: 3.4",
