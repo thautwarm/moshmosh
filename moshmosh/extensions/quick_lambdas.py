@@ -95,7 +95,7 @@ class QuickLambda(Extension):
         self.detector = QuickLambdaDetector(self.activation, token)
 
     def rewrite_ast(self, node):
-        from rbnf_rts.unparse import Unparser
         node = self.detector.visit(node)
-        Unparser(node)
+        # from rbnf_rts.unparse import Unparser
+        # Unparser(node)
         return node

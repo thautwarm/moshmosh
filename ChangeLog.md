@@ -9,4 +9,7 @@ commit: "compat Python3.x"
 
 2019/10/11
 - removed the mechanism from future-fstrings due to the redundant manipulations, use Python import mechanism since then.
-- the pipeline extension and quick-lambda extension
+- more extensions:
+    - quick-lambdas
+    - scoped-operators
+    - pipelines

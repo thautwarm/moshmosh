@@ -32,7 +32,7 @@ class ScopedOperatorVisitor(ast.NodeTransformer):
             name = n.op.__class__.__name__
             pair = self.pair
             if name == pair[0]:
-                fn = ast.Name(pair[1])
+                fn = ast.Name(pair[1], ast.Load())
                 return ast.Call(
                     fn,
                     [self.visit(n.left), self.visit(n.right)],

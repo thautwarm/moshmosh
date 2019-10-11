@@ -5,7 +5,7 @@ from functools import reduce
 print()
 print()
 x = map(_ + 1, _0_)
-print(x([1, 2, 3]))
+assert isinstance(x([1, 2, 3]), map)
 
 x = [1, 2, 3] | map(_ + 1, _0_) | list
 assert x == [2, 3, 4]
