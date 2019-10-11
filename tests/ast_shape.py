@@ -6,5 +6,5 @@ print_ast = ast.Name("print", ast.Load())
 
 
 pprint(parse("""
-lambda x: 1 | 2
+a[1:2]
 """))

@@ -15,7 +15,7 @@ def build_ast(d):
     nodes = fix_ast_ctx(nodes)
 
     mock = ast.Module(nodes)
-    ast.fix_missing_locations(mock)
+
     return mock.body
 
 

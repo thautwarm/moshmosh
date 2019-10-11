@@ -45,15 +45,29 @@ class SyntacticPatternBinding:
 
         raise NotImplementedError(n)
 
+    def _visit_seq(self, type, n):
+        def find_star(elts):
+            for i, elt in enumerate(elts):
+                if isinstance(elt, ast.Starred):
+                    return i
+            return -1
+        star_idx = find_star(n.elts)
+        if star_idx is -1:
+            elts = list(map(self.visit, n.elts))
+            return self.case_comp.seq_n(type, elts)
+
+        ast_elts = n.elts
+        elts1 = list(map(self.visit, ast_elts[:star_idx]))
+        star = self.visit(ast_elts[star_idx].value)
+        elts2 = list(map(self.visit, ast_elts[star_idx+1:]))
+        return self.case_comp.seq_m_star_n(type, elts1, star, elts2)
+
+
     def visit_Tuple(self, n: ast.Tuple):
-        elts = list(map(self.visit, n.elts))
-        assert not any(isinstance(e, ast.Starred) for e in n.elts)
-        return self.case_comp.tuple_n(elts)
+        return self._visit_seq(tuple, n)
 
     def visit_List(self, n: ast.List):
-        elts = list(map(self.visit, n.elts))
-        assert not any(isinstance(e, ast.Starred) for e in n.elts)
-        return self.case_comp.list_n(elts)
+        return self._visit_seq(list, n)
 
     def visit(self, node):
         """Visit a node."""

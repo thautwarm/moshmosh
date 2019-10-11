@@ -214,7 +214,7 @@ class CaseCompilation(t.Generic[G]):
                 else:
                     body
 
-            inner = self.tuple_n(elts)
+            inner = self.seq_n(tuple, elts)
             stmts = inner.apply(Expr(mid), body)
             # noinspection PyTypeChecker
             suite = decons(mid, self.ret, ctor.value,
@@ -298,15 +298,66 @@ class CaseCompilation(t.Generic[G]):
 
         return then
 
-    def tuple_n(self, elts):
+    def size_ge(self, n: int):
+        n = ast.Constant(n)
+
+        def then(pattern):
+            if -5 < n.value < 256:
+                # noinspection PyStatementEffect PyUnusedLocal
+                @quote
+                def quote_size_chk(ret, tag, n, stmts):
+                    if len(tag) is n:
+                        stmts
+                    else:
+                        ret = None
+            else:
+                # noinspection PyStatementEffect PyUnusedLocal
+                @quote
+                def quote_size_chk(ret, tag, n, stmts):
+                    if len(tag) >= n:
+                        stmts
+                    else:
+                        ret = None
+
+            @dyn_check
+            def pat(target: Expr, remain: Stmts):
+                remain = pattern.apply(target, remain)
+                # noinspection PyTypeChecker
+                stmts = quote_size_chk(self.ret, target.value, n,
+                                       remain.suite)
+                return Stmts(stmts)
+
+            return Pattern(pat)
+
+        return then
+
+    def seq_n(self, type, elts):
         return self.recog(
-            compose(self.type_as(tuple), self.size_is(len(elts))),
+            compose(self.type_as(type), self.size_is(len(elts))),
             self.item)(elts)
 
-    def list_n(self, elts):
+    def seq_m_star_n(self, type, elts1, star, elts2):
+        n1 = len(elts1)
+        n2 = len(elts2)
+        n = n1 + n2
+        def item(expr: Expr, i):
+            if i < n1:
+                return self.item(expr, i)
+            if i > n1:
+                return self.item(expr, i - n)
+            @quote
+            def get_item(value, start, end):
+                # noinspection PyStatementEffect
+                value[start:end]
+
+            # noinspection PyTypeChecker
+            expr: ast.Expr = get_item(expr.value, ast.Constant(n1), ast.Constant(-n2))[0]
+            return Expr(expr.value)
+
         return self.recog(
-            compose(self.type_as(list), self.size_is(len(elts))),
-            self.item)(elts)
+            compose(self.type_as(type), self.size_ge(n)),
+            self.item
+        )(elts1 + [star] + elts2)
 
     def item(self, expr: Expr, i):
         @quote

@@ -9,7 +9,6 @@ def rewrite_fn(f):
     exec(src, f.__globals__)
     return f.__globals__[f.__name__]
 
-
 def test_pampy(data):
     for datum in data:
         match(datum, [_, str, _], lambda a, b, c: "%s(%s)%s" % (a, b, c),
@@ -17,37 +16,25 @@ def test_pampy(data):
               (a, b))
 
 
-class TypeMatcher:
-    def __init__(self, t):
-        def match(i, x):
-            if i is not 1 or not isinstance(x, t):
-                return None
-            return x,
+def mk(_isinstance):
+    def test_mm(data):
+        isinstance = _isinstance
+    # +pattern-matching
+        for d in data:
+            with match(d):
+                if [a, isinstance(str) and b, c]:
+                    "%s(%s)%s" % (a, b, c)
+                if (isinstance(str) and s, isinstance(int) and i):
+                    s * i
+                if (isinstance(int) and i1, isinstance(int) and i2):
+                    "%d%d" % (i1, i2)
+    return test_mm
 
-        self.__match__ = match
-
-
-Str = TypeMatcher(str)
-Int = TypeMatcher(int)
-
-def test_mm(data):
-# +pattern-matching
-    Str_ = Str
-    Int_ = Int
-    for d in data:
-        with match(d):
-            if [a, isinstance(str) and b, c]:
-                "%s(%s)%s" % (a, b, c)
-            if (isinstance(str) and s, isinstance(int) and i):
-                s * i
-            if (isinstance(int) and i1, isinstance(int) and i2):
-                "%d%d" % (i1, i2)
-
-
-rewrite_fn(test_mm)
+rewrite_fn(mk)
 
 data = [("xx", 3), ("yyy", 2), (1, 2), (5, 6), (1000, 2000)]
 
+test_mm = mk(isinstance)
 test_pampy(data)
 test_mm(data)
 

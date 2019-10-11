@@ -33,14 +33,14 @@ def ast_to_literal_without_locations(node):
         res = {'constructor': node.__class__.__name__}
         for field_name in field_names:
             field = getattr(node, field_name, None)
-            field = ast_to_literal(field)
+            field = ast_to_literal_without_locations(field)
             res[field_name] = field
 
         return res
     if isinstance(node, list):
         res = []
         for each in node:
-            res.append(ast_to_literal(each))
+            res.append(ast_to_literal_without_locations(each))
         return res
     return node
 
