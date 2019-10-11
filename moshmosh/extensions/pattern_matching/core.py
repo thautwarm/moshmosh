@@ -8,12 +8,6 @@ T = t.TypeVar('T')
 G = t.TypeVar('G')
 H = t.TypeVar('H')
 
-runtime_match_failed = "_match_failed"
-runtime_match_succeeded = "_match_succeeded"
-
-match_failed = ast.Name("_match_failed", ast.Load())
-match_succeeded = ast.Name("_match_succeeded", ast.Load())
-
 not_exhaustive_err_type = ast.Name(NotExhaustive.__name__, ast.Load())
 
 
@@ -93,15 +87,15 @@ class CaseCompilation(t.Generic[G]):
     def literal(self, v):
         # noinspection PyStatementEffect PyUnusedLocal
         @quote
-        def quote_eq(ret, v, failed, expr, stmts):
+        def quote_eq(ret, v, expr, stmts):
             if v == expr:
                 stmts
             else:
-                ret = failed
+                ret = None # failed
 
         @dyn_check
         def pat(target: Expr, remain: Stmts):
-            stmts = quote_eq(self.ret, v, match_failed, target.value,
+            stmts = quote_eq(self.ret, v, target.value,
                              remain.suite)
             return Stmts(stmts)
 
@@ -110,15 +104,15 @@ class CaseCompilation(t.Generic[G]):
     def pin(self, s: Expr):
         # noinspection PyStatementEffect PyUnusedLocal
         @quote
-        def quote_eq(ret, v, failed, expr, stmts):
+        def quote_eq(ret, v, expr, stmts):
             if v == expr:
                 stmts
             else:
-                ret = failed
+                ret = None
 
         @dyn_check
         def pat(target: Expr, remain: Stmts):
-            stmts = quote_eq(self.ret, s.value, match_failed, target.value,
+            stmts = quote_eq(self.ret, s.value, target.value,
                              remain.suite)
             return Stmts(stmts)
 
@@ -160,13 +154,10 @@ class CaseCompilation(t.Generic[G]):
     def alternative(self, ps):
         # noinspection PyStatementEffect PyUnusedLocal
         @quote
-        def quote_alt(cur, now_stmts, then_stmts, ret, failed):
+        def quote_alt(now_stmts, then_stmts, ret):
             now_stmts
-            cur = ret
-            if cur is failed:
+            if ret is None:
                 then_stmts
-            else:
-                ret = cur
 
         @quote
         def quote_match_failed(not_exhaustive_err_type):
@@ -174,13 +165,12 @@ class CaseCompilation(t.Generic[G]):
 
         @dyn_check
         def pat(target, body):
-            cur = Gensym("or").gen()
             then_code = Stmts(quote_match_failed(not_exhaustive_err_type))
             for each in reversed(ps):
                 now_code: Stmts = each.apply(target, body)
                 assert isinstance(now_code, Stmts)
-                stmts = quote_alt(cur, now_code.suite, then_code.suite,
-                                  self.ret, match_failed)
+                stmts = quote_alt(now_code.suite, then_code.suite,
+                                  self.ret)
                 then_code = Stmts(stmts)
             return then_code
 
@@ -217,19 +207,36 @@ class CaseCompilation(t.Generic[G]):
 
             # noinspection PyStatementEffect PyUnusedLocal
             @quote
-            def decons(mid, ret, failed, ctor, n, tag, body):
+            def decons(mid, ret, ctor, n, tag, body):
                 mid = ctor.__match__(n, tag)
                 if mid is None:
-                    ret = failed
+                    ret = None
                 else:
                     body
 
             inner = self.tuple_n(elts)
             stmts = inner.apply(Expr(mid), body)
             # noinspection PyTypeChecker
-            suite = decons(mid, self.ret, match_failed, ctor.value,
+            suite = decons(mid, self.ret, ctor.value,
                            ast.Constant(n), target.value, stmts.suite)
             return Stmts(suite)
+
+        return Pattern(pat)
+
+    def instance_of(self, ty):
+        # noinspection PyStatementEffect PyUnusedLocal
+        @quote
+        def quote_tychk(ret, tag, type, stmts):
+            if isinstance(tag, type):
+                stmts
+            else:
+                ret = None
+
+        @dyn_check
+        def pat(target: Expr, remain: Stmts):
+            stmts = quote_tychk(self.ret, target.value, ty.value,
+                                remain.suite)
+            return Stmts(stmts)
 
         return Pattern(pat)
 
@@ -241,16 +248,16 @@ class CaseCompilation(t.Generic[G]):
         def then(pattern):
             # noinspection PyStatementEffect PyUnusedLocal
             @quote
-            def quote_tychk(ret, failed, tag, ty, stmts):
+            def quote_tychk(ret, tag, ty, stmts):
                 if isinstance(tag, ty):
                     stmts
                 else:
-                    ret = failed
+                    ret = None
 
             @dyn_check
             def pat(target: Expr, remain: Stmts):
                 remain = pattern.apply(target, remain)
-                stmts = quote_tychk(self.ret, match_failed, target.value, ty,
+                stmts = quote_tychk(self.ret, target.value, ty,
                                     remain.suite)
                 return Stmts(stmts)
 
@@ -265,25 +272,25 @@ class CaseCompilation(t.Generic[G]):
             if -5 < n.value < 256:
                 # noinspection PyStatementEffect PyUnusedLocal
                 @quote
-                def quote_size_chk(ret, failed, tag, n, stmts):
+                def quote_size_chk(ret, tag, n, stmts):
                     if len(tag) is n:
                         stmts
                     else:
-                        ret = failed
+                        ret = None
             else:
                 # noinspection PyStatementEffect PyUnusedLocal
                 @quote
-                def quote_size_chk(ret, failed, tag, n, stmts):
+                def quote_size_chk(ret, tag, n, stmts):
                     if len(tag) == n:
                         stmts
                     else:
-                        ret = failed
+                        ret = None
 
             @dyn_check
             def pat(target: Expr, remain: Stmts):
                 remain = pattern.apply(target, remain)
                 # noinspection PyTypeChecker
-                stmts = quote_size_chk(self.ret, match_failed, target.value, n,
+                stmts = quote_size_chk(self.ret, target.value, n,
                                        remain.suite)
                 return Stmts(stmts)
 
@@ -313,64 +320,29 @@ class CaseCompilation(t.Generic[G]):
 
     def match(self, pairs):
         @quote
-        def quote_alt(cur, now_stmts, then_stmts, ret, failed):
+        def quote_alt(now_stmts, then_stmts, ret):
             now_stmts
-            cur = ret
-            if cur is failed:
+            if ret is None:
                 then_stmts
-            else:
-                ret = cur
 
         @quote
         def quote_match_failed(not_exhaustive_err_type):
             raise not_exhaustive_err_type
 
         def pat(target):
-            cur = Gensym("switch").gen()
             then_code = Stmts(quote_match_failed(not_exhaustive_err_type))
             for each, body in reversed(pairs):
 
                 suite = body.suite
                 suite.reverse()
-                suite.append(ast.Assign([self.ret], match_succeeded))
+                suite.append(ast.Assign([self.ret], ast.Constant(())))
                 suite.reverse()
 
                 now_code: Stmts = each.apply(target, body)
                 assert isinstance(now_code, Stmts)
-                stmts = quote_alt(cur, now_code.suite, then_code.suite,
-                                  self.ret, match_failed)
+                stmts = quote_alt(now_code.suite, then_code.suite,
+                                  self.ret)
                 then_code = Stmts(stmts)
             return then_code
 
         return pat
-
-
-# from astpretty import pprint
-#
-# case_comp = CaseCompilation(".this")
-# p1 = case_comp.literal(17)
-# p2 = case_comp.capture(Symbol("a"))
-# p3 = case_comp.alternative([p1, p2])
-#
-#
-# def expr_code(a):
-#     return Expr(a)
-#
-#
-# def stmts_code(xs):
-#     return Stmts(xs)
-#
-#
-
-#
-#
-# p4 = case_comp.recog(tuple_n(2), item)([p3, case_comp.pin(Symbol("a"))])
-#
-# k = p4.apply(
-#     expr_code(ast.Name("tuple_sized_2", ast.Load())),
-#     stmts_code([
-#         ast.Name("a", ast.Load()),
-#     ]))
-#
-# from rbnf_rts.unparse import Unparser
-# Unparser(ast.Module(k.suite))

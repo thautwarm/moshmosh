@@ -5,26 +5,6 @@ import itertools
 class NotExhaustive(Exception):
     pass
 
-
-def _call(f):
-    return f()
-
-
-class MatchToken:
-    def __init__(self, n):
-        self.name = n
-
-
-@_call
-class Failed:
-    pass
-
-
-@_call
-class Succeeded:
-    pass
-
-
 class ListViewProspectiveGrowError(Exception):
     pass
 

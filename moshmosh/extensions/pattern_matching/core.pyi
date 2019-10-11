@@ -71,6 +71,9 @@ class CaseCompilation(t.Generic[G]):
     def size_is(self, n: int) -> t.Callable[[Pattern], Pattern]:
         ...
 
+    def instance_of(self, ty: Expr[T]) -> Pattern[T, G]:
+        ...
+
     @classmethod
     def type_as(cls, a: t.Type[T]):
         def g(b):

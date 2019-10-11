@@ -3,7 +3,7 @@ from inspect import getsource
 from pampy import match, _
 
 
-def rewrite_fn(f, extensions=()):
+def rewrite_fn(f):
     src = getsource(f)
     src = perform_extension(src)
     exec(src, f.__globals__)
@@ -30,16 +30,17 @@ class TypeMatcher:
 Str = TypeMatcher(str)
 Int = TypeMatcher(int)
 
-
 def test_mm(data):
 # +pattern-matching
+    Str_ = Str
+    Int_ = Int
     for d in data:
         with match(d):
-            if [a, Str(b), c]:
+            if [a, isinstance(str) and b, c]:
                 "%s(%s)%s" % (a, b, c)
-            if (Str(s), Int(i)):
+            if (isinstance(str) and s, isinstance(int) and i):
                 s * i
-            if (Int(i1), Int(i2)):
+            if (isinstance(int) and i1, isinstance(int) and i2):
                 "%d%d" % (i1, i2)
 
 
@@ -50,10 +51,9 @@ data = [("xx", 3), ("yyy", 2), (1, 2), (5, 6), (1000, 2000)]
 test_pampy(data)
 test_mm(data)
 
+# In [1]: %timeit test_pampy(data)
+# 56.6 µs ± 824 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
 
+# In [2]: %timeit test_mm(data)
+# 3.93 µs ± 86.5 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
 
-# %timeit test_mm(data)
-# 6.76 µs ± 239 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
-
-# %timeit test_pampy(data)
-# 59.9 µs ± 797 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)

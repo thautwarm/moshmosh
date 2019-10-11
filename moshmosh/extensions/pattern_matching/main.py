@@ -2,7 +2,6 @@ import ast
 from io import StringIO
 from moshmosh.ast_compat import ConsistentConstant
 from moshmosh.extensions.pattern_matching.core import *
-from moshmosh.extensions.pattern_matching.runtime import Failed, Succeeded
 from moshmosh.extension import Extension, Activation
 from moshmosh.extensions.pattern_matching.runtime import NotExhaustive
 from moshmosh.ctx_fix import ExprContextFixer
@@ -21,9 +20,16 @@ class SyntacticPatternBinding:
         if n.keywords:
             raise NotImplementedError(n)
 
-        if isinstance(n.func, ast.Name) and n.func.id == 'pin' and len(
+        if isinstance(n.func, ast.Name):
+            if n.func.id == 'pin' and len(
                 n.args) == 1:
-            return self.case_comp.pin(Expr(n.args[0]))
+                return self.case_comp.pin(Expr(n.args[0]))
+            if n.func.id == 'isinstance':
+                if n.args == 1:
+                    expr = Expr(n.args[0])
+                else:
+                    expr = Expr(ast.Tuple(n.args, ast.Load()))
+                return self.case_comp.instance_of(expr)
 
         return self.case_comp.recog2(
             Expr(n.func), [self.visit(elt) for elt in n.args])
@@ -131,11 +137,6 @@ class PatternMatching(Extension):
     def pre_rewrite_src(self, io: StringIO):
         io.write('from {} import {}\n'.format(__name__,
                                               NotExhaustive.__name__))
-
-        io.write('from {} import {} as {}\n'.format(
-            __name__, Failed.__class__.__name__, runtime_match_failed))
-        io.write('from {} import {} as {}\n'.format(
-            __name__, Succeeded.__class__.__name__, runtime_match_succeeded))
 
     def rewrite_ast(self, node: ast.AST):
         node = GenMatch(self.token, self.activation).visit(node)
