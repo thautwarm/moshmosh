@@ -91,16 +91,11 @@ class GenMatch(ast.NodeTransformer):
         fn = item.func
         if not isinstance(fn, ast.Name) or fn.id != self.token:
             return self.generic_visit(node)
-        # check if is `match(val)`
+
         assert not item.keywords
 
-        # check if all stmts in the with block are in the form
-        # `if case[<pattern>]: stmts`
-        #
-        # Q: Why not `if <pattern>`?
-        # A: `if 0` will be removed after decompilation.
-
         assert all(isinstance(stmt, ast.If) for stmt in node.body)
+
         if len(item.args) is not 1:
             val_to_match = ast.Tuple(item.args, ast.Load())
         else:

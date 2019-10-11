@@ -1,15 +1,16 @@
 from io import StringIO
 from moshmosh.rewrite_helper import ast_to_literal
-import ast
 import abc
 import typing as t
 import re
 import traceback
+from moshmosh.ast_compat import ast
+
 _extension_token_b = re.compile(b"#\s*moshmosh\?\s*?")
-_extension_token_u = re.compile(r"#\s*moshmosh\?\s*?$")
+_extension_token_u = re.compile(r"#\s*moshmosh\?\s*?")
 
 _extension_pragma_re_u = re.compile(
-    r'#\s*(?P<action>[+-])(?P<ext>[^(\s]+)\s*(\((?P<params>.*)\))?[^\S\n]*?')
+    r'\s*#\s*(?P<action>[+-])(?P<ext>[^(\s]+)\s*(\((?P<params>.*)\))?[^\S\n]*?')
 
 
 class Activation:
@@ -170,6 +171,7 @@ def extract_pragmas(lines):
                     ext = extension_builder[key] = ext_cls(*params)
                 except Exception as e:
                     raise
+
             lineno = i + 1
             if action == "+":
                 ext.activation.enable(lineno)

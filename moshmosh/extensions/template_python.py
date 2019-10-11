@@ -1,6 +1,6 @@
 import ast
 from moshmosh.extension import Extension, Activation
-from moshmosh.rewrite_helper import ast_to_literal
+from moshmosh.rewrite_helper import ast_to_literal_without_locations
 from moshmosh.ctx_fix import ExprContextFixer
 
 runtime_ast_build = '_ast_build'
@@ -88,8 +88,12 @@ class MacroTransform(ast.NodeTransformer):
         self.token = token
 
     def visit_FunctionDef(self, fn: ast.FunctionDef):
-        if not len(fn.decorator_list) is 1:
+        if fn.lineno not in self.activation:
             return self.generic_visit(fn)
+
+        if len(fn.decorator_list) is not 1:
+            return self.generic_visit(fn)
+
         deco = fn.decorator_list[0]
 
         if not (isinstance(deco, ast.Name) and deco.id == self.token):
@@ -109,7 +113,7 @@ class MacroTransform(ast.NodeTransformer):
             stmt = splicing.visit(stmt)
             new_body.append(stmt)
 
-        mod: ast.Module = ast.parse(repr(ast_to_literal(new_body)))
+        mod: ast.Module = ast.parse(repr(ast_to_literal_without_locations(new_body)))
         ast.fix_missing_locations(mod)
         expr: ast.Expr = mod.body[0]
         value = expr.value
@@ -127,6 +131,8 @@ class Template(Extension):
 
     def __init__(self, token="quote"):
         self.token = token
+        self.visitor = MacroTransform(self.activation, self.token)
+        self.ctx_fixer = ExprContextFixer()
 
     def pre_rewrite_src(self, io):
         io.write('from {} import build_ast as {}\n'.format(
@@ -134,6 +140,6 @@ class Template(Extension):
         io.write('from copy import deepcopy as {}\n'.format(runtime_ast_copy))
 
     def rewrite_ast(self, node: ast.AST):
-        node = MacroTransform(self.activation, self.token).visit(node)
-        ExprContextFixer().visit(node)
+        node = self.visitor.visit(node)
+        self.ctx_fixer.visit(node)
         return node
