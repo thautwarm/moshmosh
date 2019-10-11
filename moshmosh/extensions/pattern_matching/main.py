@@ -130,9 +130,8 @@ class GenMatch(ast.NodeTransformer):
 
 
 class PatternMatching(Extension):
-    __slots__ = ('tokens', 'activation')
+    __slots__ = ('tokens', )
     identifier = 'pattern-matching'
-    activation: Activation
 
     def pre_rewrite_src(self, io: StringIO):
         io.write('from {} import {}\n'.format(__name__,
@@ -149,5 +148,4 @@ class PatternMatching(Extension):
         return node
 
     def __init__(self, token='match'):
-        self.activation = Activation()
         self.token = token

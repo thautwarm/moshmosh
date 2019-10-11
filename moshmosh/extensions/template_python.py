@@ -123,13 +123,9 @@ class MacroTransform(ast.NodeTransformer):
 
 
 class Template(Extension):
-
-    __slots__ = ('activation', )
     identifier = "template-python"
-    activation: Activation
 
     def __init__(self, token="quote"):
-        self.activation = Activation()
         self.token = token
 
     def pre_rewrite_src(self, io):

@@ -59,6 +59,22 @@ class ExtensionMeta(type):
             return super().__new__(mcs, name, bases, ns)
         bases = tuple(filter(lambda it: Extension is not it, bases))
 
+        # All extensions need instantiating the its activation info.
+        __init__ = ns.get('__init__', None)
+        if __init__:
+            def init(self, *args, **kwargs):
+                self.activation = Activation()
+                __init__(self, *args, **kwargs)
+        else:
+            def init(self):
+                self.activation = Activation()
+        if 'activation' not in ns:
+            ns['activation'] = None
+
+        assert 'identifier' in ns, "An extension should have its identifier."
+
+        ns['__init__'] = init
+
         ret: t.Type[RealExtension] = type(name, (*bases, RealExtension), ns)
         Registered.extensions[ret.identifier] = ret
 
@@ -70,13 +86,7 @@ class RealExtension:
     An abstraction among syntax extensions
     """
     @property
-    @abc.abstractmethod
     def activation(self) -> Activation:
-        raise NotImplemented
-
-    @activation.setter
-    @abc.abstractmethod
-    def activation(self, value):
         raise NotImplemented
 
     @property
@@ -103,16 +113,10 @@ class Extension(metaclass=ExtensionMeta):
     _root = True
 
     @property
-    @abc.abstractmethod
     def activation(self) -> Activation:
         raise NotImplemented
 
-    @activation.setter
-    @abc.abstractmethod
-    def activation(self, value):
-        raise NotImplemented
-
-    @classmethod
+    @property
     @abc.abstractmethod
     def identifier(cls):
         "A string to indicate the class of extension instance."

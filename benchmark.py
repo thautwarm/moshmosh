@@ -51,8 +51,9 @@ test_pampy(data)
 test_mm(data)
 
 
-%timeit test_mm(data)
+
+# %timeit test_mm(data)
 # 6.76 µs ± 239 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
 
-%timeit test_pampy(data)
+# %timeit test_pampy(data)
 # 59.9 µs ± 797 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
