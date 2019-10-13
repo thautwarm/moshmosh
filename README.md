@@ -2,6 +2,10 @@
 
 An advanced syntax extension system implemented in pure python.
 
+```
+pip install moshmosh-base
+```
+
 # Preview
 
 ```python
