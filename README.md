@@ -1,5 +1,9 @@
 # Moshmosh
 
+[![Build](https://travis-ci.com/thautwarm/moshmosh.svg?branch=master)](https://travis-ci.com/thautwarm/moshmosh)
+
+[![Support](https://img.shields.io/badge/PyPI-&nbsp;3\.5~3\.7-Orange.svg?style=flat)](https://pypi.org/project/moshmosh-base)
+
 An advanced syntax extension system implemented in pure python.
 
 ```

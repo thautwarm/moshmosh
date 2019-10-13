@@ -17,3 +17,10 @@ commit: "compat Python3.x"
 2019/10/13:
 - removed locations in quotations.
 - added unpacking support for list and tuple patterns.
+
+
+Released Notes
+-----------------
+
+2019/10/13:
+- First released version: 0.2, supporting 3.5+
