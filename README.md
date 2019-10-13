@@ -1,8 +1,6 @@
 # Moshmosh
 
-[![Build](https://travis-ci.com/thautwarm/moshmosh.svg?branch=master)](https://travis-ci.com/thautwarm/moshmosh)
-
-[![Support](https://img.shields.io/badge/PyPI-&nbsp;3\.5~3\.7-Orange.svg?style=flat)](https://pypi.org/project/moshmosh-base)
+[![Build](https://travis-ci.com/thautwarm/moshmosh.svg?branch=master)](https://travis-ci.com/thautwarm/moshmosh) [![Support](https://img.shields.io/badge/PyPI-&nbsp;3\.5~3\.7-Orange.svg?style=flat)](https://pypi.org/project/moshmosh-base) [![codecov](https://codecov.io/gh/thautwarm/moshmosh/branch/master/graph/badge.svg)](https://codecov.io/gh/thautwarm/moshmosh)
 
 An advanced syntax extension system implemented in pure python.
 
