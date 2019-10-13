@@ -13,3 +13,7 @@ commit: "compat Python3.x"
     - quick-lambdas
     - scoped-operators
     - pipelines
+
+2019/10/13:
+- removed locations in quotations.
+- added unpacking support for list and tuple patterns.

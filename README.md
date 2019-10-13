@@ -19,6 +19,23 @@ An advanced syntax extension system implemented in pure python.
 The first line of the file should start with a comment `# moshmosh?`, which tells us
 that it's expected to use Moshmosh extension system.
 
+
+## Tips
+
+The order of first-time enabling some extensions matters, the following one presents a valid order:
+
+```python
+# moshmosh?
+# +pattern-matching
+# +quick-lambda
+# +scoped-operator
+# +template-python
+# +pipeline
+```
+
+Unless you use parametric `quick-lambda` like `# +quick-lambda(it)`,
+the first time to enable `pattern-matching` should be prior to that of enabling `quick-lambda`, and `scoped-operator`, `template-python` and `pipeline` should be enabled for the first time after first-time enabling `quick-lambda`.
+
 ## Case Study : Pattern Matching
 
 ```python
@@ -64,8 +81,8 @@ Supported Patterns:
 - As pattern: `a, var`
 - Wildcard: `_`
 - Nested patterns:
-    - Tuple: `(pat1, pat2, pat3)`
-    - List:  `[pat1, pat2, pat3]`
+    - Tuple: `(pat1, pat2, pat3), (pat1, *pat2, pat3)`
+    - List:  `[pat1, pat2, pat3], [pat1, *pat2, pat3]`
     - Recogniser: `Cons(pat1, pat2, pat3)`, note that,
         the function `Cons.__match__(<n arg>, value_to_match)` is exact the protocol.
 
