@@ -38,9 +38,15 @@ test_mm = mk(isinstance)
 test_pampy(data)
 test_mm(data)
 
+from timeit import timeit
+
+time1 = timeit("test(data)", globals=dict(data=data, test=test_pampy), number=10000)
+time2 = timeit("test(data)", globals=dict(data=data, test=test_mm), number=10000)
 # In [1]: %timeit test_pampy(data)
 # 56.6 µs ± 824 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)
 
 # In [2]: %timeit test_mm(data)
 # 3.93 µs ± 86.5 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
 
+assert time1 / time2 > 10
+print("pampy : {}\nmoshmosh: {}\npampy/moshmosh: {}".format(time1, time2, time1/time2))
