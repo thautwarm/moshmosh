@@ -18,8 +18,9 @@ class ConsistentConstant(metaclass=SupertypeMeta):
             return ast.Num(i)
         if isinstance(i, str):
             return ast.Str(i)
+        if isinstance(i, tuple) and version_info < (3, 6):
+            return ast.Tuple(elts=list(map(ConsistentConstant, i)), ctx=ast.Load())
         return ast.NameConstant(i)
-
 
 if version_info < (3, 7):
     ast = ModuleType("ast", _ast.__doc__)
@@ -51,12 +52,32 @@ if version_info < (3, 7):
             pass
 
         ast.Constant = Constant
+        def get_constant(n: Constant):
+            if isinstance(n, ast.Num):
+                return n.n
+            elif isinstance(n, ast.Str):
+                return n.s
+            return n.value
+    else:
+        def get_constant(n: ast.Constant):
+            return n.value
 
     if not hasattr(_ast, "Starred"):
 
         class Starred:
-            pass
+            def __init__(self, *args, **kwargs):
+                raise NotImplementedError
 
         ast.Starred = Starred
+
+    if not hasattr(_ast, "AnnAssign"):
+
+        class AnnAssign:
+            def __init__(self, *args, **kwargs):
+                raise NotImplementedError
+
+        ast.AnnAssign = AnnAssign
 else:
     ast = _ast
+    def get_constant(n: ast.Constant):
+        return n.value

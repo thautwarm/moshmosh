@@ -1,4 +1,4 @@
-import ast
+from moshmosh.ast_compat import ast
 from moshmosh.extension import Extension, Activation
 from moshmosh.rewrite_helper import ast_to_literal_without_locations
 from moshmosh.ctx_fix import ExprContextFixer
@@ -113,9 +113,9 @@ class MacroTransform(ast.NodeTransformer):
             stmt = splicing.visit(stmt)
             new_body.append(stmt)
 
-        mod: ast.Module = ast.parse(repr(ast_to_literal_without_locations(new_body)))
+        mod = ast.parse(repr(ast_to_literal_without_locations(new_body)))  # type: ast.Module
         ast.fix_missing_locations(mod)
-        expr: ast.Expr = mod.body[0]
+        expr = mod.body[0]  # type: ast.Expr
         value = expr.value
         fn.body = [
             ast.Return(

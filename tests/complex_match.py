@@ -21,8 +21,8 @@ def f2(x, r=1):
 
 assert f2(5) == 120
 
-
 def f3(x):
+# +pattern-matching
     with match(x):
         if [1, *x]:
             print(x)
@@ -30,6 +30,8 @@ def f3(x):
         if (1, x, y): return x + y
         if _: return 0
 
+
+assert f3([1, 2, 3, 4]) == 9
 
 assert f3((1, 2, 3)) == 5
 assert f3((1, 2, 3, 4)) == 0

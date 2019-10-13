@@ -1,7 +1,7 @@
 # moshmosh?
 # +template-python
-import ast
 import typing as t
+from moshmosh.ast_compat import ast, get_constant
 from moshmosh.extensions.pattern_matching.runtime import NotExhaustive
 from toolz import compose
 T = t.TypeVar('T')
@@ -34,14 +34,14 @@ class Gensym:
 
 
 class Expr(t.Generic[T]):
-    value: ast.expr
+    value = None  # type: ast.expr
 
     def __init__(self, mk: ast.expr):
         self.value = mk
 
 
 class Stmts(t.Generic[T]):
-    suite: t.List[ast.stmt]
+    suite = None  # type: t.List[ast.stmt]
 
     def __init__(self, mk: t.List[ast.stmt]):
         self.suite = mk
@@ -91,7 +91,7 @@ class CaseCompilation(t.Generic[G]):
             if v == expr:
                 stmts
             else:
-                ret = None # failed
+                ret = None  # failed
 
         @dyn_check
         def pat(target: Expr, remain: Stmts):
@@ -167,7 +167,7 @@ class CaseCompilation(t.Generic[G]):
         def pat(target, body):
             then_code = Stmts(quote_match_failed(not_exhaustive_err_type))
             for each in reversed(ps):
-                now_code: Stmts = each.apply(target, body)
+                now_code = each.apply(target, body)  # type: Stmts
                 assert isinstance(now_code, Stmts)
                 stmts = quote_alt(now_code.suite, then_code.suite,
                                   self.ret)
@@ -184,9 +184,9 @@ class CaseCompilation(t.Generic[G]):
                 last = body
                 mid = Gensym("recog").gen()
                 for i in reversed(range(n)):
-                    sub_tag: Expr = item(target, i)
+                    sub_tag = item(target, i)  # type: Stmts
                     assert isinstance(sub_tag, Expr)
-                    last: Stmts = elts[i].apply(Expr(mid), last)
+                    last = elts[i].apply(Expr(mid), last)  # type: : Stmts
                     last = Stmts(
                         [ast.Assign([mid], sub_tag.value), *last.suite])
                 return last
@@ -269,7 +269,7 @@ class CaseCompilation(t.Generic[G]):
         n = ast.Constant(n)
 
         def then(pattern):
-            if -5 < n.value < 256:
+            if -5 < get_constant(n) < 256:
                 # noinspection PyStatementEffect PyUnusedLocal
                 @quote
                 def quote_size_chk(ret, tag, n, stmts):
@@ -302,22 +302,12 @@ class CaseCompilation(t.Generic[G]):
         n = ast.Constant(n)
 
         def then(pattern):
-            if -5 < n.value < 256:
-                # noinspection PyStatementEffect PyUnusedLocal
-                @quote
-                def quote_size_chk(ret, tag, n, stmts):
-                    if len(tag) is n:
-                        stmts
-                    else:
-                        ret = None
-            else:
-                # noinspection PyStatementEffect PyUnusedLocal
-                @quote
-                def quote_size_chk(ret, tag, n, stmts):
-                    if len(tag) >= n:
-                        stmts
-                    else:
-                        ret = None
+            @quote
+            def quote_size_chk(ret, tag, n, stmts):
+                if len(tag) >= n:
+                    stmts
+                else:
+                    ret = None
 
             @dyn_check
             def pat(target: Expr, remain: Stmts):
@@ -340,23 +330,31 @@ class CaseCompilation(t.Generic[G]):
         n1 = len(elts1)
         n2 = len(elts2)
         n = n1 + n2
+        if n2 is 0:
+            # when elts2 is empty,
+            # use a[-1:None] instead of a[-1:-0]
+            end = None
+        else:
+            end = -n2
+
         def item(expr: Expr, i):
             if i < n1:
                 return self.item(expr, i)
             if i > n1:
                 return self.item(expr, i - n)
+
             @quote
             def get_item(value, start, end):
                 # noinspection PyStatementEffect
                 value[start:end]
 
             # noinspection PyTypeChecker
-            expr: ast.Expr = get_item(expr.value, ast.Constant(n1), ast.Constant(-n2))[0]
+            expr = get_item(expr.value, ast.Constant(n1), ast.Constant(end))[0]  # type: ast.Expr
             return Expr(expr.value)
 
         return self.recog(
             compose(self.type_as(type), self.size_ge(n)),
-            self.item
+            item
         )(elts1 + [star] + elts2)
 
     def item(self, expr: Expr, i):
@@ -366,7 +364,7 @@ class CaseCompilation(t.Generic[G]):
             value[ith]
 
         # noinspection PyTypeChecker
-        expr: ast.Expr = get_item(expr.value, ast.Constant(i))[0]
+        expr = get_item(expr.value, ast.Constant(i))[0]  # type: ast.Expr
         return Expr(expr.value)
 
     def match(self, pairs):
@@ -389,7 +387,7 @@ class CaseCompilation(t.Generic[G]):
                 suite.append(ast.Assign([self.ret], ast.Constant(())))
                 suite.reverse()
 
-                now_code: Stmts = each.apply(target, body)
+                now_code = each.apply(target, body)  # type: Stmts
                 assert isinstance(now_code, Stmts)
                 stmts = quote_alt(now_code.suite, then_code.suite,
                                   self.ret)

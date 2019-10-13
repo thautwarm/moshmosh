@@ -6,7 +6,7 @@ def f(x):
     x + 1
     x = y + 1
 
-import ast
+from moshmosh.ast_compat import ast
 from astpretty import pprint
 
 stmts = f(ast.Name("a"))

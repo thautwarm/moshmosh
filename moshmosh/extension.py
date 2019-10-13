@@ -1,9 +1,9 @@
-from io import StringIO
-from moshmosh.rewrite_helper import ast_to_literal
 import abc
 import typing as t
 import re
-import traceback
+from collections import OrderedDict
+from io import StringIO
+from moshmosh.rewrite_helper import ast_to_literal
 from moshmosh.ast_compat import ast
 
 _extension_token_b = re.compile(b"#\s*moshmosh\?\s*?")
@@ -16,6 +16,7 @@ _extension_pragma_re_u = re.compile(
 class Activation:
     """This sort of instances tell us
     whether an extension is enabled at a specific line number"""
+
     def __init__(self):
         self.intervals = []
 
@@ -76,7 +77,7 @@ class ExtensionMeta(type):
 
         ns['__init__'] = init
 
-        ret: t.Type[RealExtension] = type(name, (*bases, RealExtension), ns)
+        ret = type(name, (*bases, RealExtension), ns)  # type: t.Type[RealExtension]
         Registered.extensions[ret.identifier] = ret
 
         return ret
@@ -136,7 +137,7 @@ class Extension(metaclass=ExtensionMeta):
 
 
 class Registered:
-    extensions: t.Dict[str, t.Type[Extension]] = {}
+    extensions = {}  # type: t.Dict[str, t.Type[Extension]]
 
 
 def extract_pragmas(lines):
@@ -147,7 +148,8 @@ def extract_pragmas(lines):
     # bind to local for faster visiting in the loop
     extension_pragma_re = _extension_pragma_re_u
     registered = Registered.extensions
-    extension_builder: t.Dict[object, Extension] = {}
+    # allow manually setting enable order
+    extension_builder = OrderedDict()  # type: t.Dict[object, Extension]
 
     for i, line in enumerate(lines):
         pragma = extension_pragma_re.match(line)
@@ -182,9 +184,9 @@ def extract_pragmas(lines):
 
 
 def _stack_exc(f):
-    def apply(source_code):
+    def apply(source_code, filename='<unknown>'):
         try:
-            return f(source_code)
+            return f(source_code, filename)
         except Exception as e:
             traceback.print_tb(e.__traceback__)
             raise e
@@ -199,11 +201,11 @@ def check_if_use_moshmosh_sys(source_code):
 
 
 @_stack_exc
-def perform_extension(source_code):
+def perform_extension(source_code, filename):
 
     str_type = type(source_code)
 
-    node = ast.parse(source_code)
+    node = ast.parse(source_code, filename)
     if str_type is bytes:
         source_code = source_code.decode('utf8')
 

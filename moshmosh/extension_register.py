@@ -16,7 +16,7 @@ class ProxySourceFileLoader(SourceFileLoader):
     def get_data(self, path: str):
         data = SourceFileLoader.get_data(self, path)
         if check_if_use_moshmosh_sys(data):
-            return perform_extension(data)
+            return perform_extension(data, self.path)
         return data
 
 
@@ -27,14 +27,14 @@ class ProxySourcelessLoader(SourcelessFileLoader):
     def get_data(self, path: str):
         data = SourcelessFileLoader.get_data(self, path)
         if check_if_use_moshmosh_sys(data):
-            return perform_extension(data)
+            return perform_extension(data, self.path)
         return data
 
 
 class MoshmoshFinder(PathFinder):
     @classmethod
     def find_spec(cls, fullname, path=None, target=None):
-        spec: ModuleSpec = PathFinder.find_spec(fullname, path, target)
+        spec = PathFinder.find_spec(fullname, path, target)
         if spec and spec.loader and isinstance(spec.loader, FileLoader):
             loader = spec.loader
             loader_ty = loader.__class__

@@ -1,5 +1,5 @@
-import ast
 from io import StringIO
+from moshmosh.ast_compat import ast
 from moshmosh.ast_compat import ConsistentConstant
 from moshmosh.extensions.pattern_matching.core import *
 from moshmosh.extension import Extension, Activation

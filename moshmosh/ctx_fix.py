@@ -1,4 +1,4 @@
-import ast
+from moshmosh.ast_compat import ast
 
 
 class ExprContextWriter(ast.NodeVisitor):

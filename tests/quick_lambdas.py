@@ -1,6 +1,8 @@
 # moshmosh?
 # +quick-lambda
 # +pipeline
+from tests.py35_unparse import Unparser
+Unparser(__ast__)
 from functools import reduce
 print()
 print()

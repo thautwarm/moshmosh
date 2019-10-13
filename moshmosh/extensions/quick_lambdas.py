@@ -3,7 +3,7 @@ from moshmosh.ast_compat import ast
 import re
 
 class LambdaCollector(ast.NodeTransformer):
-    def __init__(self, pattern: re.Pattern, mk_arg):
+    def __init__(self, pattern: 're.Pattern', mk_arg): # re.Pattern might not found
         self.mk_arg = mk_arg
         self.pattern = pattern
         self.max_arg_index = -1
