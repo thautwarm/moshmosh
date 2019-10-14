@@ -68,8 +68,8 @@ of course much more powerful than most programming languages.
 
 - And pattern: `pat1 and pat2 and pat3 ...`
 - Or pattern: `pat1 or pat2 or pat3...`
-- Pin pattern: `pin(value)`
-- Literal pattern: `1, "str", 1+2j, (1, 2),`
+- Pin pattern: `pin(value)`, this is quite useful. See [Elixir Pin Operator](https://elixir-lang.org/getting-started/pattern-matching.html#the-pin-operator)
+- Literal pattern: `1, "str", 1+2j, (1, 2)`
 - As pattern: `a, var`
 - Wildcard: `_`
 - Nested patterns:
