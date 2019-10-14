@@ -27,14 +27,15 @@ if version_info < (3, 7):
 
     def make_new_init(supercls, fields_):
         def init(self, *args, **kwargs):
+            _undef = object()
             supercls.__init__(self)
             fields = iter(fields_)
             for arg in args:
                 field = next(fields)
                 setattr(self, field, arg)
             for field in fields:
-                v = kwargs.get(field)
-                if v is not None:
+                v = kwargs.get(field, _undef)
+                if v is not _undef:
                     setattr(self, field, v)
 
         return init

@@ -22,7 +22,8 @@ class MoshmoshASTTransf(ast.NodeTransformer):
     @staticmethod
     def visit(node):
         try:
-            return _moshmosh_ipy.ast_transform(node)
+            node = _moshmosh_ipy.ast_transform(node)
+            return node
         except Exception as e:
             raise InputRejected
 

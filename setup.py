@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 with open('README.md') as readme:
     readme = readme.read()
 
-version = "0.3.1"
+version = "0.3.2"
 
 setup(
     name='moshmosh-base',
