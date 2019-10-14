@@ -5,8 +5,10 @@
 An advanced syntax extension system implemented in pure python.
 
 ```
-pip install moshmosh-base
+pip install -U moshmosh-base --no-compile
 ```
+
+Note that `--no-compile` is required.
 
 # Preview
 
