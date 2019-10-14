@@ -1,3 +1,17 @@
+
+# Frist of All
+
+
+> The awareness of low-level implementation details brings the appreciation of an abstraction and the intuitive explanation for it.
+
+This is a saying from my idol in the field of [Programming Language](https://en.wikipedia.org/wiki/Programming_language).
+
+I present it here, in case anyone prejudging the reliability of this project.
+
+**THIS PROJECT SHOULD WORK PERFECTLY UNDER ANY SUPPPORTED PYTHON VERSION(>=3.5), FOR ALL 3-RD PARTY LIBRARIES SUPPORTED IN ANY RELIABLE CPYTHON DISTRIBUTION**.
+
+There is no hack but simple static code analyses and ast transformations, and a hack usually contains `inspect.*` that I'll never use in this project.
+
 # Moshmosh
 
 [![Build](https://travis-ci.com/thautwarm/moshmosh.svg?branch=master)](https://travis-ci.com/thautwarm/moshmosh) [![Support](https://img.shields.io/badge/PyPI-&nbsp;3\.5~3\.7-Orange.svg?style=flat)](https://pypi.org/project/moshmosh-base) [![codecov](https://codecov.io/gh/thautwarm/moshmosh/branch/master/graph/badge.svg)](https://codecov.io/gh/thautwarm/moshmosh)
@@ -134,6 +148,32 @@ Assign(
     ),
 )
 ```
+
+## Case Study: Lazy Import
+
+```python
+# moshmosh?
+# +lazy-import
+import numpy as np
+# -lazy-import
+
+# in fact numpy is not imported here,
+# and once you use it, it gets imported.
+
+def arr10():
+    # The first time call
+    # arr10 will enforce the import of numpy.
+    return np.zeros(10)
+```
+
+After the lazy modules are actually imported, there's
+no overhead to access their members.
+
+However, please only import modules when using `lazy-import`.
+
+The use case is about the necessary cross-import when you want to
+organise your codebase in a more fine-grained way.
+
 
 ## Acknowledgements
 
