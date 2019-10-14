@@ -39,6 +39,7 @@ Then, in `mypackage.py`, start coding with a pragma comment `# moshmosh?`, then 
 
 The matching protocol which stems from Python-ideas mailing list is introduced in,
 which means you can define your own patterns conveniently.
+The link is [here](https://mail.python.org/pipermail/python-ideas/2015-April/032920.html).
 
 ```python
 # moshmosh?
