@@ -1,3 +1,6 @@
+# +lazy-import
+from moshmosh.extensions import pattern_matching, scoped_operators, pipelines, template_python
+# -lazy-import
 from moshmosh.extension import Extension
 from moshmosh.ast_compat import ast
 import re
@@ -101,3 +104,16 @@ class QuickLambda(Extension):
         # from rbnf_rts.unparse import Unparser
         # Unparser(node)
         return node
+
+    def __gt__(self, other):
+        return isinstance(other, pattern_matching.PatternMatching)
+
+    def __lt__(self, other):
+        return isinstance(
+            other,
+            (
+                template_python.Template,
+                pipelines.Pipeline,
+                scoped_operators.ScopedOperator
+            )
+        )

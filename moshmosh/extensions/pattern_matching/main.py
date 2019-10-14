@@ -157,11 +157,3 @@ class PatternMatching(Extension):
 
     def __init__(self, token='match'):
         self.token = token
-
-    def prior(self, other):
-        # must be prior to quick-lambda,
-        # otherwise, the wildcard might not work well.
-
-        from moshmosh.extensions.quick_lambdas import QuickLambda
-        it = isinstance(other, QuickLambda) and other.token == "_"
-        return it

@@ -27,4 +27,3 @@ class Pipeline(Extension):
 
     def rewrite_ast(self, node):
         return self.visitor.visit(node)
-

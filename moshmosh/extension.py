@@ -81,7 +81,7 @@ class ExtensionMeta(type):
 
         ns['__init__'] = init
         ns = {
-            **{k: v for k, v in Extension.__dict__.items() if not k.startswith('_')},
+            **Extension.__dict__,
             **ns
         }
         ret = type(name, bases, ns)  # type: t.Type[RealExtension]
@@ -118,10 +118,10 @@ class Extension(metaclass=ExtensionMeta):
     def post_rewrite_src(self, io: StringIO):
         pass
 
-    def prior(self, other):
+    def __gt__(self, other):
         return False
 
-    def posterior(self, other):
+    def __lt__(self, other):
         return False
 
 
@@ -135,7 +135,7 @@ def solve_deps(exts):
         for other in exts:
             if ext is other:
                 continue
-            if ext.posterior(other) or other.prior(ext):
+            if ext > other or other <  ext:
                 deps[ext].add(other)
     groups = []
     while deps:
