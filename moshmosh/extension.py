@@ -2,7 +2,6 @@ import abc
 import typing as t
 import re
 import traceback
-from collections import OrderedDict
 from io import StringIO
 from moshmosh.rewrite_helper import ast_to_literal
 from moshmosh.ast_compat import ast
@@ -165,8 +164,7 @@ def extract_pragmas(lines):
     # bind to local for faster visiting in the loop
     extension_pragma_re = _extension_pragma_re_u
     registered = Registered.extensions
-    # allow manually setting enable order
-    extension_builder = OrderedDict()  # type: t.Dict[object, Extension]
+    extension_builder = {}  # type: t.Dict[object, Extension]
 
     for i, line in enumerate(lines):
         pragma = extension_pragma_re.match(line)
@@ -245,7 +243,12 @@ def perform_extension(source_code, filename):
     string_io.write(repr(literal))
     string_io.write('\n')
     string_io.write("__ast__ = _literal_to_ast(__literal__)\n")
-    string_io.write('__code__ = compile(__ast__, __file__, "exec")\n')
+
+    string_io.write('__code__ = compile')
+    string_io.write('(__ast__, ')
+    string_io.write('__import__("os").path.abspath("") if __name__ == "__main__" else __file__,')
+    string_io.write('"exec")\n')
+
     string_io.write('exec(__code__, globals())\n')
 
     for each in extensions:

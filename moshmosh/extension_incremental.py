@@ -1,14 +1,24 @@
 from moshmosh.extension import *
-def update_pragmas(lines):
+from moshmosh.extension import _extension_pragma_re_u
+
+def update_pragmas(extension_builder: t.Dict[object, Extension], lines):
     """
     Traverse the source codes and extract out the scope of
-    every extension.
+    every extension. Incrementally.
     """
     # bind to local for faster visiting in the loop
     extension_pragma_re = _extension_pragma_re_u
     registered = Registered.extensions
-    # allow manually setting enable order
-    extension_builder = OrderedDict()  # type: t.Dict[object, Extension]
+
+    # for new cells of IPython, refresh the scoping info
+    # of the extensions
+    for ext in extension_builder.values():
+        intervals = ext.activation.intervals
+        if intervals:
+            last = intervals.pop()
+            intervals.clear()
+            if type(last) is int:
+                intervals.append(0)
 
     for i, line in enumerate(lines):
         pragma = extension_pragma_re.match(line)
@@ -41,7 +51,11 @@ def update_pragmas(lines):
 
     return list(extension_builder.values())
 
-def perform_extension_incr(source_code, exts, filename):
+def perform_extension_incr(
+    extension_builder: t.Dict[object, Extension],
+    source_code,
+    filename
+):
 
     str_type = type(source_code)
 
@@ -49,7 +63,8 @@ def perform_extension_incr(source_code, exts, filename):
     if str_type is bytes:
         source_code = source_code.decode('utf8')
 
-    extensions = extract_pragmas(StringIO(source_code))
+    extensions = update_pragmas(extension_builder, StringIO(source_code))
+    extensions = sum(map(list, solve_deps(extensions)), [])
 
     string_io = StringIO()
     for each in extensions:
@@ -67,7 +82,12 @@ def perform_extension_incr(source_code, exts, filename):
     string_io.write(repr(literal))
     string_io.write('\n')
     string_io.write("__ast__ = _literal_to_ast(__literal__)\n")
-    string_io.write('__code__ = compile(__ast__, __file__, "exec")\n')
+
+    string_io.write('__code__ = compile')
+    string_io.write('(__ast__, ')
+    string_io.write('__import__("os").path.abspath("") if __name__ == "__main__" else __file__,')
+    string_io.write('"exec")\n')
+
     string_io.write('exec(__code__, globals())\n')
 
     for each in extensions:

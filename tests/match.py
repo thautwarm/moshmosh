@@ -41,8 +41,7 @@ class GreaterThan:
 
     def __match__(self, cnt: int, to_match):
         if isinstance(to_match, int) and cnt is 0 and to_match > self.v:
-            return () # matched
-
+            return ()  # matched
 
 
 with match(114, 514):

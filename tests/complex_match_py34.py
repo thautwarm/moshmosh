@@ -35,3 +35,11 @@ assert f3([1, 2, 3, 4]) == 9
 assert f3((1, 2, 3)) == 5
 assert f3((1, 2, 3, 4)) == 0
 assert f3(1) == 0
+
+with match(2, 1):
+    if (a, b, c) or [a, b, c]:
+        res = (a + b + c)
+    if (hd, tl):
+        res = (hd, tl)
+
+assert res == (2, 1)

@@ -15,3 +15,4 @@ class Test(unittest.TestCase):
         else:
             import tests.complex_match
         import tests.list_view
+        import tests.incremental

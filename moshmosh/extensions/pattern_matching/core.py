@@ -159,13 +159,9 @@ class CaseCompilation(t.Generic[G]):
             if ret is None:
                 then_stmts
 
-        @quote
-        def quote_match_failed(not_exhaustive_err_type):
-            raise not_exhaustive_err_type
-
         @dyn_check
         def pat(target, body):
-            then_code = Stmts(quote_match_failed(not_exhaustive_err_type))
+            then_code = Stmts([ast.Pass()])
             for each in reversed(ps):
                 now_code = each.apply(target, body)  # type: Stmts
                 assert isinstance(now_code, Stmts)

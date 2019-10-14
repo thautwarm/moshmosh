@@ -43,3 +43,11 @@ with match([4, 2, 3]):
         res = map(_ + hd, tl) | list
 
 assert res == [6, 7]
+
+with match(2, 1, 2, 3):
+    if (a, b, c) or [a, b, c]:
+        res = (a + b + c)
+    if (hd, *tl):
+        res = (hd, tl)
+
+assert res == (2, (1, 2, 3))

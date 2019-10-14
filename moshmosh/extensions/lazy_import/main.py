@@ -64,8 +64,8 @@ class LazyImport(Extension):
 
     def rewrite_ast(self, node):
         node = ast.fix_missing_locations(self.visitor.visit(node))
-        from astpretty import pprint
-        pprint(node)
+        # from astpretty import pprint
+        # pprint(node)
         return node
 
     def pre_rewrite_src(self, io):
