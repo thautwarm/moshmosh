@@ -1,6 +1,7 @@
 import abc
 import typing as t
 import re
+import traceback
 from collections import OrderedDict
 from io import StringIO
 from moshmosh.rewrite_helper import ast_to_literal
@@ -12,6 +13,8 @@ _extension_token_u = re.compile(r"#\s*moshmosh\?\s*?")
 _extension_pragma_re_u = re.compile(
     r'\s*#\s*(?P<action>[+-])(?P<ext>[^(\s]+)\s*(\((?P<params>.*)\))?[^\S\n]*?')
 
+class Registered:
+    extensions = {}  # type: t.Dict[str, t.Type[Extension]]
 
 class Activation:
     """This sort of instances tell us
@@ -59,6 +62,7 @@ class ExtensionMeta(type):
     def __new__(mcs, name, bases, ns: dict):
         if ns.get('_root', False):
             return super().__new__(mcs, name, bases, ns)
+
         bases = tuple(filter(lambda it: Extension is not it, bases))
 
         # All extensions need instantiating the its activation info.
@@ -76,38 +80,17 @@ class ExtensionMeta(type):
         assert 'identifier' in ns, "An extension should have its identifier."
 
         ns['__init__'] = init
-
-        ret = type(name, (*bases, RealExtension), ns)  # type: t.Type[RealExtension]
+        ns = {
+            **{k: v for k, v in Extension.__dict__.items() if not k.startswith('_')},
+            **ns
+        }
+        ret = type(name, bases, ns)  # type: t.Type[RealExtension]
         Registered.extensions[ret.identifier] = ret
 
         return ret
 
-
-class RealExtension:
-    """
-    An abstraction among syntax extensions
-    """
-    @property
-    def activation(self) -> Activation:
-        raise NotImplemented
-
-    @property
-    @abc.abstractmethod
-    def identifier(cls):
-        "A string to indicate the class of extension instance."
-        raise NotImplemented
-
-    def pre_rewrite_src(self, io: StringIO):
-        pass
-
-    @abc.abstractmethod
-    def rewrite_ast(self, node: ast.AST):
-        "A function to perform AST level rewriting"
-        raise NotImplemented
-
-    def post_rewrite_src(self, io: StringIO):
-        pass
-
+    def __instancecheck__(self, other):
+        return other in Registered.extensions.values()
 
 class Extension(metaclass=ExtensionMeta):
     """automatically extension"""
@@ -135,9 +118,43 @@ class Extension(metaclass=ExtensionMeta):
     def post_rewrite_src(self, io: StringIO):
         pass
 
+    def prior(self, other):
+        return False
 
-class Registered:
-    extensions = {}  # type: t.Dict[str, t.Type[Extension]]
+    def posterior(self, other):
+        return False
+
+
+class RequirementNotResolved(Exception):
+    pass
+
+def solve_deps(exts):
+    deps = {ext: set() for ext in exts}
+    # build dependencies
+    for ext in exts:
+        for other in exts:
+            if ext is other:
+                continue
+            if ext.posterior(other) or other.prior(ext):
+                deps[ext].add(other)
+    groups = []
+    while deps:
+        group = set.union(*deps.values()).difference(deps.keys())
+        to_del_deps = []
+        for k, v in deps.items():
+            if not v:
+                to_del_deps.append(k)
+        group.update(to_del_deps)
+        if not group:
+            raise RequirementNotResolved
+
+        for k in to_del_deps:
+            del deps[k]
+
+        for v in deps.values():
+            v.difference_update(group)
+        groups.append(group)
+    return groups
 
 
 def extract_pragmas(lines):
@@ -210,6 +227,7 @@ def perform_extension(source_code, filename):
         source_code = source_code.decode('utf8')
 
     extensions = extract_pragmas(StringIO(source_code))
+    extensions = sum(map(list, solve_deps(extensions)), [])
 
     string_io = StringIO()
     for each in extensions:
@@ -220,23 +238,8 @@ def perform_extension(source_code, filename):
         ast.fix_missing_locations(node)
 
     literal = ast_to_literal(node)
-    string_io.write("""
-import ast as _ast
-def _literal_to_ast(literal):
-    '''
-    Convert a python literal to an AST.
-    '''
-    if isinstance(literal, dict):
-        ctor = literal.pop('constructor')
-        ctor = getattr(_ast, ctor)
-        return ctor(**{k: _literal_to_ast(v) for k, v in literal.items()})
-
-    if isinstance(literal, list):
-        return list(map(_literal_to_ast, literal))
-
-    return literal
-
-    """)
+    string_io.write("import ast as _ast\n")
+    string_io.write("from moshmosh.rewrite_helper import literal_to_ast as _literal_to_ast\n")
     string_io.write('\n')
     string_io.write('__literal__ = ')
     string_io.write(repr(literal))

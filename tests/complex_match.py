@@ -1,5 +1,7 @@
 # moshmosh?
 # +pattern-matching
+# +quick-lambda
+# +pipeline
 
 class C:
     @classmethod
@@ -32,7 +34,12 @@ def f3(x):
 
 
 assert f3([1, 2, 3, 4]) == 9
-
 assert f3((1, 2, 3)) == 5
 assert f3((1, 2, 3, 4)) == 0
 assert f3(1) == 0
+
+with match([4, 2, 3]):
+    if [hd, *tl]:
+        res = map(_ + hd, tl) | list
+
+assert res == [6, 7]

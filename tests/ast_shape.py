@@ -6,5 +6,8 @@ print_ast = ast.Name("print", ast.Load())
 
 
 pprint(parse("""
-a[1:2]
+from a import b
+from . import c
+import b
+from . import *
 """))

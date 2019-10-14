@@ -1,6 +1,7 @@
 import moshmosh
 import sys
 
+import tests.lazy_import
 import tests.match
 import tests.template_python
 import tests.pipelines
@@ -11,3 +12,7 @@ if sys.version_info < (3, 5):
 else:
     import tests.complex_match
 import tests.list_view
+
+from moshmosh.extensions.pattern_matching import PatternMatching
+from moshmosh.extension import Extension
+assert isinstance(PatternMatching, Extension)

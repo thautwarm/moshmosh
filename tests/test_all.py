@@ -4,6 +4,7 @@ import sys
 
 class Test(unittest.TestCase):
     def test_extensions(self):
+        import tests.lazy_import
         import tests.match
         import tests.template_python
         import tests.pipelines

@@ -47,3 +47,7 @@ class ExprContextFixer(ast.NodeVisitor):
     def visit_Name(self, n: ast.Name):
         if not hasattr(n, 'ctx') or n.ctx is None:
             n.ctx = ast.Load()
+
+    def visit_For(self, n: ast.For):
+        _store_writer.visit(n.target)
+        self.generic_visit(n)

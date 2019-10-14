@@ -88,10 +88,12 @@ class QuickLambdaDetector(ast.NodeTransformer):
             call.keywords = [mk_quick_lam(self.arg_col, arg) for arg in call.keywords]
             return mk_quick_lam(self.placeholder_col, call)
         return  self.generic_visit(call)
+
 class QuickLambda(Extension):
     identifier = "quick-lambda"
     def __init__(self, token: str=None):
         token = token or '_'
+        self.token = token
         self.detector = QuickLambdaDetector(self.activation, token)
 
     def rewrite_ast(self, node):

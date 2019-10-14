@@ -10,9 +10,9 @@ commit: "compat Python3.x"
 2019/10/11
 - removed the mechanism from future-fstrings due to the redundant manipulations, use Python import mechanism since then.
 - more extensions:
-    - quick-lambdas
-    - scoped-operators
-    - pipelines
+    - `quick-lambdas`
+    - `scoped-operators`
+    - `pipelines`
 
 2019/10/13:
 - removed locations in quotations.
@@ -24,3 +24,5 @@ Released Notes
 
 2019/10/13:
 - First released version: 0.2, supporting 3.5+
+
+2019/10/14: adding the `lazy-import` extension.
