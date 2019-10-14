@@ -12,7 +12,7 @@ pip install moshmosh-base
 
 ## Working with IPython
 
-You should copy [moshmosh_ipy.py](https://raw.githubusercontent.com/thautwarm/moshmosh/master/static)
+You should copy [moshmosh_ipy.py](https://raw.githubusercontent.com/thautwarm/moshmosh/master/moshmosh_ipy.py)
 to `$USER/.ipython/profile_default/startup/`.
 
 If this directory does not exist, use command `ipython profile create` to instantiate.
