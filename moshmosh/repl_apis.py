@@ -97,3 +97,37 @@ def perform_extension_incr(
     if str_type is bytes:
         code = bytes(code, encoding='utf8')
     return code
+
+
+class IPythonSupport:
+    def __init__(self, builder: t.Dict[object, Extension]):
+        self.builder = builder
+        self.tmp_exts = None
+
+    def input_transform(self, lines):
+        self.tmp_exts = update_pragmas(self.builder, lines)
+        return lines
+
+    def ast_transform(self, node):
+        extensions = self.tmp_exts
+        extensions = sum(map(list, solve_deps(extensions)), [])
+
+        prev_io = StringIO()
+        for each in extensions:
+            each.pre_rewrite_src(prev_io)
+
+        prev_io.write("import ast as _ast\n")
+        prev_io.write("from moshmosh.rewrite_helper import literal_to_ast as _literal_to_ast\n")
+        prev_stmts = ast.parse(prev_io.getvalue()).body
+
+        for each in extensions:
+            node = each.rewrite_ast(node)
+            ast.fix_missing_locations(node)
+
+        post_io = StringIO()
+        for each in extensions:
+            each.post_rewrite_src(post_io)
+
+        post_stmts = ast.parse(post_io.getvalue()).body
+        node.body = prev_stmts + node.body + post_stmts
+        return node

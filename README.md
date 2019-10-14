@@ -10,22 +10,35 @@ pip install moshmosh-base
 
 # Preview
 
-```python
-# moshmosh?
+## Working with IPython
 
-# Use extension
-# +<extension name>[<extension arg>{','}]
+You should copy [moshmosh_ipy.py](https://raw.githubusercontent.com/thautwarm/moshmosh/master/static)
+to `$USER/.ipython/profile_default/startup/`.
 
-<do stuff with your extensions>
+If this directory does not exist, use command `ipython profile create` to instantiate.
 
-# Unset extension
-# -<extension name>[<extension arg>{','}]
-```
+Some examples about pattern matching, pipelines and quick lambdas:
 
-The first line of the file should start with a comment `# moshmosh?`, which tells us
-that it's expected to use Moshmosh extension system.
+![IPython example 1](https://raw.githubusercontent.com/thautwarm/moshmosh/master/static/img1.png)
+
+Some examples about the scoped operators:
+
+![IPython example 2](https://raw.githubusercontent.com/thautwarm/moshmosh/master/static/img2.png)
+
+## Working with regular Python files
+
+Import `moshmosh` in your main module:
+
+![Main.py](https://raw.githubusercontent.com/thautwarm/moshmosh/master/static/main.png)
+
+Then, in `mypackage.py`, start coding with a pragma comment `# moshmosh?`, then you can use moshmosh extension system.
+
+![Upack.py](https://raw.githubusercontent.com/thautwarm/moshmosh/master/static/upack.png)
 
 ## Case Study : Pattern Matching
+
+The matching protocol which stems from Python-ideas mailing list is introduced in,
+which means you can define your own patterns conveniently.
 
 ```python
 # moshmosh?
@@ -43,26 +56,16 @@ class GreaterThan:
 with match(114, 514):
     if (GreaterThan(42)() and a, b):
         print(b, a)
+# 514 114
 ```
 
-The syntax of pattern matching:
-```python
-
-# +pattern-matching(token_name='match')
-
-with <token_name>(value):
-    if pat1:
-        body1
-    if pat2:
-        body2
-    ...
-```
-
-The matching should be exhaustive, otherwise,
-a `moshmosh.extensions.pattern_matching.runtime.NotExhaustive`
+Note that the matching clauses should be exhaustive,
+otherwise, a `moshmosh.extensions.pattern_matching.runtime.NotExhaustive`
 might get raised.
 
-Supported Patterns:
+The supported Patterns are listed here, which is
+of course much more powerful than most programming languages.
+
 - And pattern: `pat1 and pat2 and pat3 ...`
 - Or pattern: `pat1 or pat2 or pat3...`
 - Pin pattern: `pin(value)`
@@ -75,9 +78,17 @@ Supported Patterns:
     - Recogniser: `Cons(pat1, pat2, pat3)`, note that,
         the function `Cons.__match__(<n arg>, value_to_match)` is exact the protocol.
 
+The pattern matching should be more efficient than those hand-written codes without
+ugly optimizations.
 
+Besides, Moshmosh's pattern matching is orders of magnitude faster than
+any other alternatives.
 
 ## Case Study : Template-Python
+
+This is relatively a simple quasiquote implementation, inspired by MetaOCaml.
+It does not support manual splices or nested quotations, but the function arguments
+are automatically spliced.
 
 ```python
 # moshmosh?

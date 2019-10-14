@@ -1,4 +1,4 @@
-from moshmosh.extension_incremental import *
+from moshmosh.repl_apis import *
 
 ext_builder = {}
 

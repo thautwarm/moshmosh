@@ -51,3 +51,29 @@ with match(2, 1, 2, 3):
         res = (hd, tl)
 
 assert res == (2, (1, 2, 3))
+
+
+def test_fn(data):
+    with match(data):
+        if (e, isinstance(int) and count):
+            res =  [e] * count
+        if (a, b, _) or [_, a, b]:
+            res = (a + b)
+        if (hd, *tl) or [hd, *tl]:
+            res = (hd, tl)
+        if "42":
+            res = 42
+    return res
+
+assert test_fn([1, 2, 3]) == 5
+assert test_fn((1, 2, 3)) == 3
+assert test_fn((1, 2)) == [1, 1]
+assert test_fn((object, 3)) == [object, object, object]
+assert test_fn((object, 3, 4, 5)) == (object, (3, 4, 5))
+assert test_fn("42") == 42
+from moshmosh.extensions.pattern_matching import NotExhaustive
+
+try:
+    test_fn(1)
+except NotExhaustive:
+    pass
