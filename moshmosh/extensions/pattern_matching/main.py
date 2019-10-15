@@ -24,12 +24,19 @@ class SyntacticPatternBinding:
             if n.func.id == 'pin' and len(
                 n.args) == 1:
                 return self.case_comp.pin(Expr(n.args[0]))
+
             if n.func.id == 'isinstance':
-                if n.args == 1:
+                if len(n.args) == 1:
                     expr = Expr(n.args[0])
                 else:
                     expr = Expr(ast.Tuple(n.args, ast.Load()))
                 return self.case_comp.instance_of(expr)
+            if n.func.id == 'when':
+                if len(n.args) == 1:
+                    expr = Expr(n.args[0])
+                else:
+                    expr = Expr(ast.BoolOp(op=ast.And(), values=n.args))
+                return self.case_comp.guard(expr)
 
         return self.case_comp.recog2(
             Expr(n.func), [self.visit(elt) for elt in n.args])

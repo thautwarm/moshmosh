@@ -118,6 +118,22 @@ class CaseCompilation(t.Generic[G]):
 
         return Pattern(pat)
 
+    def guard(self, s: Expr):
+        # noinspection PyStatementEffect PyUnusedLocal
+        @quote
+        def quote_when(ret, expr, stmts):
+            if expr:
+                stmts
+            else:
+                ret = None
+
+        @dyn_check
+        def pat(target: Expr, remain: Stmts):
+            stmts = quote_when(self.ret, s.value, remain.suite)
+            return Stmts(stmts)
+
+        return Pattern(pat)
+
     def wildcard(_):
         @dyn_check
         def pat(_, remain):

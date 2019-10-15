@@ -89,6 +89,7 @@ of course much more powerful than most programming languages.
 - Literal pattern: `1, "str", 1+2j, (1, 2)`
 - As pattern: `a, var`
 - Wildcard: `_`
+- Guard: `when(cond1, cond2, cond3)`
 - Nested patterns:
     - Tuple: `(pat1, pat2, pat3), (pat1, *pat2, pat3)`
     - List:  `[pat1, pat2, pat3], [pat1, *pat2, pat3]`

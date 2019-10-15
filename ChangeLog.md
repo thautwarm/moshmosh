@@ -25,4 +25,9 @@ Released Notes
 2019/10/13:
 - First released version: 0.2, supporting 3.5+
 
-2019/10/14: adding the `lazy-import` extension.
+2019/10/14:
+- `lazy-import` extension.
+- IPython support
+
+2019/10/15:
+- guards

@@ -43,3 +43,12 @@ with match(2, 1):
         res = (hd, tl)
 
 assert res == (2, 1)
+
+
+with match(1):
+    if a and when(a != 1):
+        res = 100
+    if a and when(a == 1):
+        res = 200
+
+assert res == 200

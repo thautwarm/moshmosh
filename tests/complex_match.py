@@ -77,3 +77,11 @@ try:
     test_fn(1)
 except NotExhaustive:
     pass
+
+with match(1):
+    if a and when(a != 1):
+        res = 100
+    if a and when(a == 1):
+        res = 200
+
+assert res == 200
