@@ -1,5 +1,5 @@
 
-# Frist of All
+# First of All
 
 
 > The awareness of low-level implementation details brings the appreciation of an abstraction and the intuitive explanation for it.
