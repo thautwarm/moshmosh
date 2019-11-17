@@ -12,7 +12,7 @@ class LambdaCollector(ast.NodeTransformer):
         self.max_arg_index = -1
 
     def found_quick_lambda(self):
-        return self.max_arg_index is not -1
+        return self.max_arg_index != -1
 
     def visit_Name(self, n: ast.Name):
         match = self.pattern.match(n.id)
