@@ -316,6 +316,9 @@ class Unparser:
         self.leave()
 
     # expr
+    def _Constant(self, t):
+        self.write(repr(t.s))
+
     def _Bytes(self, t):
         self.write(repr(t.s))
 
