@@ -70,7 +70,8 @@ class QuickLambdaDetector(ast.NodeTransformer):
                         argcount = cur_collector.max_arg_index + 1
                         return ast.Lambda(
                             ast.arguments(
-                                [
+                                posonlyargs=[],
+                                args=[
                                     ast.arg(
                                         '.' + cur_collector.mk_arg(i),
                                         annotation=None
