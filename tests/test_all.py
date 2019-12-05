@@ -2,6 +2,7 @@ import moshmosh.extension_register
 import unittest
 import sys
 
+
 class Test(unittest.TestCase):
     def test_extensions(self):
         import tests.lazy_import
@@ -16,3 +17,4 @@ class Test(unittest.TestCase):
             import tests.complex_match
         import tests.list_view
         import tests.incremental
+        import tests.extend_dict

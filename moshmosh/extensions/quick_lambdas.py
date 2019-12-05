@@ -5,8 +5,9 @@ from moshmosh.extension import Extension
 from moshmosh.ast_compat import ast
 import re
 
+
 class LambdaCollector(ast.NodeTransformer):
-    def __init__(self, pattern: 're.Pattern', mk_arg): # re.Pattern might not found
+    def __init__(self, pattern: 're.Pattern', mk_arg):  # re.Pattern might not found
         self.mk_arg = mk_arg
         self.pattern = pattern
         self.max_arg_index = -1
@@ -28,11 +29,12 @@ class LambdaCollector(ast.NodeTransformer):
 
         return n
 
+
 class CollectorDelegate:
     def __init__(self, cls, token, mk_arg):
         pattern = re.compile(mk_arg("(?P<ith>\d*)") + '$')
         self.collector = cls(pattern, mk_arg)
-        self._mk_new = lambda : cls(pattern, mk_arg)
+        self._mk_new = lambda: cls(pattern, mk_arg)
 
     def mk_new_(self):
         self.collector = self._mk_new()
@@ -40,10 +42,12 @@ class CollectorDelegate:
     def get(self):
         return self.collector
 
+
 class QuickLambdaDetector(ast.NodeTransformer):
     """
     scala-style lambdas, not recursively processed.
     """
+
     def __init__(self, activation, token: str):
         self.arg_col = CollectorDelegate(
             LambdaCollector,
@@ -87,15 +91,18 @@ class QuickLambdaDetector(ast.NodeTransformer):
                             arg
                         )
                 return arg
+
             call.func = self.visit(call.func)
             call.args = [mk_quick_lam(self.arg_col, arg) for arg in call.args]
             call.keywords = [mk_quick_lam(self.arg_col, arg) for arg in call.keywords]
             return mk_quick_lam(self.placeholder_col, call)
-        return  self.generic_visit(call)
+        return self.generic_visit(call)
+
 
 class QuickLambda(Extension):
     identifier = "quick-lambda"
-    def __init__(self, token: str=None):
+
+    def __init__(self, token: str = None):
         token = token or '_'
         self.token = token
         self.detector = QuickLambdaDetector(self.activation, token)

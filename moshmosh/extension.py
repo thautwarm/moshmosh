@@ -12,8 +12,10 @@ _extension_token_u = re.compile(r"#\s*moshmosh\?\s*?")
 _extension_pragma_re_u = re.compile(
     r'\s*#\s*(?P<action>[+-])(?P<ext>[^(\s]+)\s*(\((?P<params>.*)\))?[^\S\n]*?')
 
+
 class Registered:
     extensions = {}  # type: t.Dict[str, t.Type[Extension]]
+
 
 class Activation:
     """This sort of instances tell us
@@ -91,6 +93,7 @@ class ExtensionMeta(type):
     def __instancecheck__(self, other):
         return other in Registered.extensions.values()
 
+
 class Extension(metaclass=ExtensionMeta):
     """automatically extension"""
 
@@ -103,7 +106,7 @@ class Extension(metaclass=ExtensionMeta):
     @property
     @abc.abstractmethod
     def identifier(cls):
-        "A string to indicate the class of extension instance."
+        """A string to indicate the class of extension instance."""
         raise NotImplemented
 
     def pre_rewrite_src(self, io: StringIO):
@@ -111,7 +114,7 @@ class Extension(metaclass=ExtensionMeta):
 
     @abc.abstractmethod
     def rewrite_ast(self, node: ast.AST):
-        "A function to perform AST level rewriting"
+        """A function to perform AST level rewriting"""
         raise NotImplemented
 
     def post_rewrite_src(self, io: StringIO):
@@ -127,6 +130,7 @@ class Extension(metaclass=ExtensionMeta):
 class RequirementNotResolved(Exception):
     pass
 
+
 def solve_deps(exts):
     deps = {ext: set() for ext in exts}
     # build dependencies
@@ -134,7 +138,7 @@ def solve_deps(exts):
         for other in exts:
             if ext is other:
                 continue
-            if ext > other or other <  ext:
+            if ext > other or other < ext:
                 deps[ext].add(other)
     groups = []
     while deps:
@@ -217,7 +221,6 @@ def check_if_use_moshmosh_sys(source_code):
 
 @_stack_exc
 def perform_extension(source_code, filename):
-
     str_type = type(source_code)
 
     node = ast.parse(source_code, filename)

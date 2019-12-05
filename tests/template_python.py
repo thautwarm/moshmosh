@@ -6,6 +6,7 @@ def f(x):
     x + 1
     x = y + 1
 
+
 from moshmosh.ast_compat import ast
 from astpretty import pprint
 
