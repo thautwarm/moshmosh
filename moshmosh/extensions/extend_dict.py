@@ -10,7 +10,10 @@ class ExtendDictVisitor(ast.NodeTransformer):
         self.token = token
 
     def visit_Name(self, n: ast.Name):
-        if n.lineno not in self.activation or len(n.id) < 3 or "_" not in n.id:
+        if n.lineno not in self.activation or len(n.id) < 3:
+            return self.generic_visit(n)
+
+        if n.id.count("_") != 1:
             return self.generic_visit(n)
 
         dict_name, key_name = n.id.split("_")
