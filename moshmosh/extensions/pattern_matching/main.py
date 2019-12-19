@@ -140,7 +140,7 @@ class GenMatch(ast.NodeTransformer):
         pairs = []
         for if_ in ifs:
             case = spb.visit(if_.test)
-            stmts = Stmts(if_.body)
+            stmts = Stmts([self.visit(each) for each in if_.body])
             pairs.append((case, stmts))
 
         res = case_comp.match(pairs)(Expr(cached))
