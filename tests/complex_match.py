@@ -90,5 +90,7 @@ with match(1, 2, 3):
     if (a, *b, c):
         pass
 
-print('c', c)
-assert a == 1 and b == [2] and c == 3
+print('abc', a, b, c)
+assert a == 1
+assert b == (2,)
+assert c == 3
