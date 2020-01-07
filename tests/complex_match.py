@@ -85,3 +85,10 @@ with match(1):
         res = 200
 
 assert res == 200
+
+with match(1, 2, 3):
+    if (a, *b, c):
+        pass
+
+print('c', c)
+assert a == 1 and b == [2] and c == 3

@@ -353,7 +353,12 @@ class CaseCompilation(t.Generic[G]):
             if i < n1:
                 return self.item(expr, i)
             if i > n1:
-                return self.item(expr, i - n)
+                # return self.item(expr, i - x)
+                # where:
+                #   (n1 + n2 + 1 - 1) - x = -1
+                #   x =  n1 + n2 + 1
+
+                return self.item(expr, i - n - 1)
 
             @quote
             def get_item(value, start, end):
