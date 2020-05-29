@@ -1,16 +1,9 @@
 
-# First of All
+# Notes
 
+This project is now under inactive development.
 
-> The awareness of low-level implementation details brings the appreciation of an abstraction and the intuitive explanation for it.
-
-This is a saying from my idol in the field of [Programming Language](https://en.wikipedia.org/wiki/Programming_language).
-
-I present it here, in case anyone prejudging the reliability of this project.
-
-**THIS PROJECT SHOULD WORK PERFECTLY UNDER ANY SUPPPORTED PYTHON VERSION(>=3.5), FOR ALL 3-RD PARTY LIBRARIES SUPPORTED IN ANY RELIABLE CPYTHON DISTRIBUTION**.
-
-There is no hack but simple static code analyses and ast transformations, and a hack usually contains `inspect.*` that I'll never use in this project.
+Want to take over? Email me.
 
 # Moshmosh
 
