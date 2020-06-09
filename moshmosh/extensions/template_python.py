@@ -91,7 +91,7 @@ class MacroTransform(ast.NodeTransformer):
         if fn.lineno not in self.activation:
             return self.generic_visit(fn)
 
-        if len(fn.decorator_list) is not 1:
+        if len(fn.decorator_list) != 1:
             return self.generic_visit(fn)
 
         deco = fn.decorator_list[0]

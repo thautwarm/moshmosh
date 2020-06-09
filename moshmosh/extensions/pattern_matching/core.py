@@ -281,22 +281,13 @@ class CaseCompilation(t.Generic[G]):
         n = ast.Constant(n)
 
         def then(pattern):
-            if -5 < get_constant(n) < 256:
-                # noinspection PyStatementEffect PyUnusedLocal
-                @quote
-                def quote_size_chk(ret, tag, n, stmts):
-                    if len(tag) is n:
-                        stmts
-                    else:
-                        ret = None
-            else:
-                # noinspection PyStatementEffect PyUnusedLocal
-                @quote
-                def quote_size_chk(ret, tag, n, stmts):
-                    if len(tag) == n:
-                        stmts
-                    else:
-                        ret = None
+            # noinspection PyStatementEffect PyUnusedLocal
+            @quote
+            def quote_size_chk(ret, tag, n, stmts):
+                if len(tag) == n:
+                    stmts
+                else:
+                    ret = None
 
             @dyn_check
             def pat(target: Expr, remain: Stmts):
@@ -342,7 +333,7 @@ class CaseCompilation(t.Generic[G]):
         n1 = len(elts1)
         n2 = len(elts2)
         n = n1 + n2
-        if n2 is 0:
+        if n2 == 0:
             # when elts2 is empty,
             # use a[-1:None] instead of a[-1:-0]
             end = None

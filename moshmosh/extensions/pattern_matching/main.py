@@ -59,7 +59,7 @@ class SyntacticPatternBinding:
                     return i
             return -1
         star_idx = find_star(n.elts)
-        if star_idx is -1:
+        if star_idx == -1:
             elts = list(map(self.visit, n.elts))
             return self.case_comp.seq_n(type, elts)
 
@@ -123,7 +123,7 @@ class GenMatch(ast.NodeTransformer):
 
         assert all(isinstance(stmt, ast.If) for stmt in node.body)
 
-        if len(item.args) is not 1:
+        if len(item.args) != 1:
             val_to_match = ast.Tuple(item.args, ast.Load())
         else:
             val_to_match = item.args[0]

@@ -5,7 +5,7 @@ class MatchError(Exception):
 class C:
     @classmethod
     def __match__(cls, i, x):
-        if i is not 2:
+        if i != 2:
             return None
         return x, x
 
