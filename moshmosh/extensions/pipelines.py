@@ -6,6 +6,7 @@ class PipelineVisitor(ast.NodeTransformer):
     """
     `a | f -> f(a)`, recursively
     """
+
     def __init__(self, activation):
         self.activation = activation
 
@@ -20,8 +21,10 @@ class PipelineVisitor(ast.NodeTransformer):
             )
         return self.generic_visit(n)
 
+
 class Pipeline(Extension):
     identifier = "pipeline"
+
     def __init__(self):
         self.visitor = PipelineVisitor(self.activation)
 

@@ -1,6 +1,7 @@
 from moshmosh.extension import *
 from moshmosh.extension import _extension_pragma_re_u
 
+
 def update_pragmas(extension_builder: t.Dict[object, Extension], lines):
     """
     Traverse the source codes and extract out the scope of
@@ -51,12 +52,12 @@ def update_pragmas(extension_builder: t.Dict[object, Extension], lines):
 
     return list(extension_builder.values())
 
-def perform_extension_incr(
-    extension_builder: t.Dict[object, Extension],
-    source_code,
-    filename
-):
 
+def perform_extension_incr(
+        extension_builder: t.Dict[object, Extension],
+        source_code,
+        filename
+):
     str_type = type(source_code)
 
     node = ast.parse(source_code, filename)

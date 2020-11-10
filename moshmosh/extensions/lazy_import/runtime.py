@@ -1,6 +1,7 @@
 from importlib import import_module
 from types import ModuleType
 
+
 def import_module_plus(name, from_mod=None, package=None):
     if from_mod is not None:
         mod = import_module(from_mod, package)
@@ -19,6 +20,7 @@ def import_module_plus(name, from_mod=None, package=None):
     else:
         return import_module(name, package)
 
+
 def import_and_replace(globals, name, asname, from_mod, package):
     mod = import_module_plus(name, from_mod, package)
     if asname:
@@ -26,6 +28,7 @@ def import_and_replace(globals, name, asname, from_mod, package):
     else:
         globals[name] = mod
     return mod
+
 
 class LazyModule(ModuleType):
     __imp_info__ = ()
