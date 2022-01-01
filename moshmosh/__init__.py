@@ -8,4 +8,5 @@ with warnings.catch_warnings():
     from .extensions import pattern_matching
 from .extensions import scoped_operators
 from .extensions import pipelines
+from .extensions import only_block
 from .extensions import quick_lambdas
